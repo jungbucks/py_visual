@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>파이썬 개념 탐험기 — 변수·리스트·함수·클래스</title>
+<style>
+:root{
+  --bg:#13111a;
+  --surface:#171b26;
+  --surface2:#1e2336;
+  --border:#2a304a;
+  --accent:#9d8df5;
+  --accent2:#5eead4;
+  --accent3:#f59e0b;
+  --green:#4ade80;
+  --blue:#60a5fa;
+  --red:#f87171;
+  --pink:#f472b6;
+  --text:#e2e8f0;
+  --muted:#9ba8bc;
+  --box-var:#7c6af7;
+  --box-1d:#5eead4;
+  --box-2d:#f59e0b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+
+/* ── 헤더 ── */
+header{
+  background:linear-gradient(135deg,#12102a 0%,#0e1a2a 100%);
+  border-bottom:1px solid var(--border);
+  padding:52px 24px 44px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+header::before{
+  content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:700px;height:360px;
+  background:radial-gradient(ellipse,rgba(124,106,247,.2) 0%,transparent 70%);
+  pointer-events:none;
+}
+.badge{
+  display:inline-block;
+  background:rgba(124,106,247,.15);border:1px solid rgba(124,106,247,.4);
+  color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:18px;
+}
+header h1{
+  font-size:clamp(26px,5vw,46px);font-weight:900;
+  background:linear-gradient(90deg,#a78bfa,#7c6af7,#5eead4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:10px;
+}
+header p{color:var(--muted);font-size:16px;max-width:540px;margin:0 auto;}
+
+/* ── 탭 네비 ── */
+nav.tabs{
+  display:flex;justify-content:center;gap:0;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  padding:0 16px;overflow-x:auto;
+}
+nav.tabs button{
+  background:none;border:none;border-bottom:3px solid transparent;
+  color:var(--muted);font-size:14px;font-weight:600;
+  padding:16px 20px;cursor:pointer;white-space:nowrap;
+  transition:color .2s,border-color .2s;
+}
+nav.tabs button.active{color:var(--accent);border-color:var(--accent);}
+nav.tabs button:hover:not(.active){color:var(--text);}
+
+/* ── 콘텐츠 ── */
+main{max-width:900px;margin:0 auto;padding:48px 20px 80px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── 섹션 공통 ── */
+.section-intro{margin-bottom:36px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.section-intro h2{font-size:26px;font-weight:800;margin-bottom:12px;color:#f1f5f9;}
+.section-intro p{color:#b0bdd0;font-size:15px;max-width:640px;}
+
+/* ── 컨트롤 패널 ── */
+.control-panel{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:22px 24px;margin-bottom:28px;
+}
+.control-panel h3{font-size:14px;font-weight:700;color:var(--muted);margin-bottom:16px;letter-spacing:.06em;}
+.ctrl-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+.ctrl-row:last-child{margin-bottom:0;}
+label.ctrl-label{font-size:13px;color:var(--muted);font-weight:600;min-width:80px;}
+input[type=text],input[type=number]{
+  background:#0d0f1a;border:1px solid var(--border);
+  border-radius:8px;padding:8px 12px;color:var(--text);font-size:14px;
+  transition:border-color .2s;outline:none;
+}
+input[type=text]:focus,input[type=number]:focus{border-color:var(--accent);}
+input[type=text]{width:180px;}
+input[type=number]{width:80px;}
+.btn{
+  background:var(--accent);color:#fff;border:none;
+  border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;
+  cursor:pointer;transition:opacity .2s,transform .1s;
+}
+.btn:hover{opacity:.88;}
+.btn:active{transform:scale(.97);}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+.btn-green{background:#16a34a;}
+.btn-sm{padding:5px 12px;font-size:12px;}
+
+/* ── 팁 박스 ── */
+.tip{
+  background:rgba(94,234,212,.07);border:1px solid rgba(94,234,212,.22);
+  border-left:4px solid var(--accent2);border-radius:0 10px 10px 0;
+  padding:12px 16px;margin:20px 0;font-size:13.5px;color:#94b4b0;
+}
+.tip strong{color:var(--accent2);}
+.warn{
+  background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);
+  border-left:4px solid var(--accent3);border-radius:0 10px 10px 0;
+  padding:12px 16px;margin:20px 0;font-size:13.5px;color:#b0a070;
+}
+.warn strong{color:var(--accent3);}
+
+/* ── 코드 블록 ── */
+.code-block{
+  background:#080a14;border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;margin:16px 0;
+}
+.code-hdr{
+  background:var(--surface2);border-bottom:1px solid var(--border);
+  padding:9px 14px;display:flex;align-items:center;gap:10px;
+}
+.dots{display:flex;gap:5px;}
+.dots span{width:11px;height:11px;border-radius:50%;}
+.d-r{background:#ff5f57;}.d-y{background:#febc2e;}.d-g{background:#28c840;}
+.code-fname{font-size:11px;color:var(--muted);font-family:monospace;flex:1;}
+pre{padding:18px;overflow-x:auto;font-size:13.5px;line-height:1.8;}
+code{font-family:'Courier New','D2Coding',monospace;}
+.kw{color:#c084fc;font-weight:600;}.fn{color:#60a5fa;}.str{color:#4ade80;}
+.num{color:#fb923c;}.cmt{color:#6b7fa3;font-style:italic;}
+.op{color:#5eead4;}
+
+/* ══════════════════════
+   변수 시각화
+══════════════════════ */
+.var-stage{
+  display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;
+  justify-content:center;
+  padding:36px 24px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;min-height:160px;
+}
+.var-box-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  animation:popIn .35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{opacity:0;transform:scale(.7) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.var-box{
+  width:110px;height:90px;
+  background:linear-gradient(145deg,#1e1640,#12102a);
+  border:2px solid var(--box-var);
+  border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;position:relative;
+  box-shadow:0 0 18px rgba(124,106,247,.25);
+  cursor:default;transition:transform .2s,box-shadow .2s;
+}
+.var-box:hover{transform:translateY(-3px);box-shadow:0 0 28px rgba(124,106,247,.45);}
+.var-box .val{font-size:20px;font-weight:800;color:#fff;}
+.var-box .type-badge{
+  font-size:9px;font-weight:700;letter-spacing:.08em;
+  background:rgba(124,106,247,.3);color:var(--accent);
+  border-radius:4px;padding:1px 6px;
+}
+.var-nametag{
+  background:var(--box-var);color:#fff;
+  font-size:12px;font-weight:700;
+  border-radius:6px;padding:4px 12px;
+  white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis;
+}
+.var-arrow{
+  font-size:18px;color:var(--muted);line-height:1;
+  transform:rotate(90deg);
+}
+.var-empty{color:var(--muted);font-size:14px;text-align:center;width:100%;}
+
+/* ══════════════════════
+   1차원 리스트 시각화
+══════════════════════ */
+.list1d-stage{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:40px 24px;overflow-x:auto;min-height:180px;
+}
+.list1d-label{font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:18px;}
+.list1d-container{
+  display:flex;align-items:flex-start;gap:0;
+  width:max-content;
+}
+.cell-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.cell{
+  width:72px;height:72px;
+  background:linear-gradient(145deg,#0f2a25,#0a1a18);
+  border-top:2px solid var(--box-1d);
+  border-bottom:2px solid var(--box-1d);
+  border-right:2px solid var(--box-1d);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;transition:background .3s,transform .2s;
+  cursor:default;
+}
+.cell:first-child{border-left:2px solid var(--box-1d);border-radius:10px 0 0 10px;}
+.cell:last-child{border-radius:0 10px 10px 0;}
+.cell:hover{background:#0d2e27;transform:translateY(-4px);}
+.cell .cval{font-size:16px;font-weight:700;color:#fff;}
+.cell-idx{font-size:11px;font-weight:600;color:var(--muted);}
+.cell-label{font-size:10px;color:var(--accent2);font-weight:600;}
+.list1d-name{
+  display:flex;align-items:center;gap:0;margin-bottom:6px;
+}
+.list1d-varname{
+  background:var(--box-1d);color:#0f2a25;font-weight:800;font-size:12px;
+  border-radius:6px;padding:4px 10px;margin-right:8px;white-space:nowrap;
+}
+.bracket{font-size:40px;color:var(--box-1d);line-height:1;font-weight:200;padding:0 4px;}
+.list1d-empty{color:var(--muted);font-size:14px;padding:20px 0;}
+
+/* ── 하이라이트 ── */
+.highlight-idx input[type=number]{width:70px;}
+.hl-cell{
+  background:rgba(251,191,36,.25) !important;
+  border-color:var(--accent3) !important;
+  transform:translateY(-6px) scale(1.06) !important;
+  box-shadow:0 0 18px rgba(251,191,36,.5);
+}
+.hl-cell .cval{color:var(--accent3) !important;}
+
+/* ══════════════════════
+   2차원 리스트 시각화
+══════════════════════ */
+.list2d-stage{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:32px 24px;overflow-x:auto;min-height:200px;
+}
+.list2d-table-wrap{display:flex;gap:16px;align-items:flex-start;width:max-content;}
+.row-label-col{display:flex;flex-direction:column;gap:0;padding-top:32px;}
+.row-label{
+  height:60px;display:flex;align-items:center;justify-content:flex-end;
+  padding-right:10px;font-size:11px;font-weight:700;color:var(--muted);
+  white-space:nowrap;
+}
+.col-headers{display:flex;gap:0;margin-bottom:4px;padding-left:0;}
+.col-header{
+  width:72px;height:28px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--muted);
+}
+.grid-rows{display:flex;flex-direction:column;gap:0;}
+.grid-row{display:flex;gap:0;}
+.gcell{
+  width:72px;height:60px;
+  background:linear-gradient(145deg,#1a1200,#120d00);
+  border-right:2px solid var(--box-2d);
+  border-bottom:2px solid var(--box-2d);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;color:#fff;
+  cursor:default;transition:background .3s,transform .2s;
+}
+.gcell:hover{background:#2a1e00;transform:scale(1.06);z-index:2;position:relative;box-shadow:0 0 14px rgba(245,158,11,.4);}
+.grid-row:first-child .gcell{border-top:2px solid var(--box-2d);}
+.grid-row .gcell:first-child{border-left:2px solid var(--box-2d);}
+.grid-row:first-child .gcell:first-child{border-radius:10px 0 0 0;}
+.grid-row:first-child .gcell:last-child{border-radius:0 10px 0 0;}
+.grid-row:last-child .gcell:first-child{border-radius:0 0 0 10px;}
+.grid-row:last-child .gcell:last-child{border-radius:0 0 10px 0;}
+
+.hl-gcell{
+  background:rgba(124,106,247,.3) !important;
+  border-color:var(--accent) !important;
+  transform:scale(1.1) !important;
+  z-index:3 !important;position:relative !important;
+  box-shadow:0 0 20px rgba(124,106,247,.6) !important;
+  color:var(--accent) !important;
+}
+.hl-gcell-row{background:rgba(96,165,250,.12) !important;}
+.hl-gcell-col{background:rgba(94,234,212,.12) !important;}
+
+/* ── 2D 컨트롤 ── */
+.grid2d-inputs{
+  display:grid;gap:3px;
+  margin:16px 0;
+}
+.grid2d-inputs input[type=text]{
+  width:60px;height:36px;padding:4px 6px;
+  text-align:center;font-size:13px;
+}
+.grid-ctrl-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+
+/* ── 인덱스 화살표 ── */
+.idx-arrow-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  margin-top:16px;
+}
+.idx-arrow-line{
+  display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);
+}
+.arrow-badge{
+  background:var(--accent3);color:#000;font-size:11px;font-weight:700;
+  border-radius:4px;padding:2px 7px;
+}
+
+/* ── 메모리 비유 다이어그램 ── */
+.memory-diagram{
+  display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:28px;margin:24px 0;
+}
+.memory-col{flex:1;min-width:200px;}
+.memory-col h4{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:14px;letter-spacing:.06em;}
+.mem-box{
+  border:2px dashed var(--border);border-radius:10px;padding:14px;
+  position:relative;display:flex;flex-direction:column;gap:8px;
+}
+.mem-address{font-size:10px;color:var(--muted);font-family:monospace;position:absolute;top:6px;right:8px;}
+.mem-item{
+  background:var(--surface2);border-radius:6px;padding:6px 10px;
+  font-size:12px;font-family:monospace;display:flex;justify-content:space-between;
+}
+.mem-key{color:var(--blue);}
+.mem-val{color:var(--green);}
+
+/* ── 퀴즈 ── */
+.quiz{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:24px;margin:28px 0;
+}
+.quiz h4{font-size:15px;font-weight:700;color:var(--accent3);margin-bottom:4px;}
+.quiz p{font-size:13px;color:var(--muted);margin-bottom:16px;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.qopt{
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  padding:10px 14px;cursor:pointer;font-size:14px;font-family:monospace;
+  color:var(--text);transition:border-color .15s,background .15s;
+}
+.qopt:hover{border-color:var(--accent);background:rgba(124,106,247,.1);}
+.qopt.correct{border-color:var(--green);background:rgba(74,222,128,.1);color:var(--green);}
+.qopt.wrong{border-color:var(--red);background:rgba(248,113,113,.08);color:var(--red);}
+.qfb{margin-top:10px;font-size:13px;min-height:18px;}
+
+/* ══════════════════════
+   함수 기계 시각화
+══════════════════════ */
+--box-fn:#a78bfa;
+.fn-preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+.fn-chip{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;
+  color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.fn-chip:hover{border-color:var(--accent);color:var(--accent);}
+.fn-chip.active{background:rgba(124,106,247,.2);border-color:var(--accent);color:var(--accent);}
+
+.fn-stage{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:32px 20px;margin-bottom:20px;overflow-x:auto;
+}
+.fn-machine-layout{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  min-width:560px;flex-wrap:nowrap;
+}
+.fn-panel{border-radius:14px;padding:20px;min-width:160px;}
+.fn-panel-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+
+.fn-params-panel{
+  background:rgba(124,106,247,.08);border:2px solid var(--accent);
+  min-width:170px;
+}
+.fn-params-panel .fn-panel-title{color:var(--accent);}
+.fn-param-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.fn-param-row:last-child{margin-bottom:0;}
+.fn-param-label{
+  font-size:12px;font-family:monospace;color:var(--blue);
+  min-width:52px;font-weight:700;
+}
+.fn-param-input{
+  width:80px;height:34px;padding:4px 8px;
+  background:#0d0f1a;border:1px solid var(--border);
+  border-radius:7px;color:var(--text);font-size:14px;font-family:monospace;
+  text-align:center;outline:none;transition:border-color .2s;
+}
+.fn-param-input:focus{border-color:var(--accent);}
+
+.fn-body-panel{
+  background:linear-gradient(145deg,#12102a,#0d0b1f);
+  border:2px solid rgba(167,139,250,.4);
+  min-width:210px;position:relative;flex:1;max-width:280px;
+  box-shadow:0 0 24px rgba(124,106,247,.15);
+}
+.fn-body-panel .fn-panel-title{color:rgba(167,139,250,.7);}
+.fn-def-line{font-size:13px;font-family:monospace;color:#c084fc;font-weight:700;margin-bottom:8px;}
+.fn-body-line{
+  font-size:13px;font-family:monospace;color:#94a3b8;
+  padding:6px 10px;background:rgba(255,255,255,.03);
+  border-radius:6px;border-left:3px solid rgba(167,139,250,.4);
+}
+.fn-gear{
+  position:absolute;top:10px;right:12px;font-size:20px;
+  opacity:.3;transition:transform .5s,opacity .3s;
+}
+.fn-computing .fn-gear{transform:rotate(180deg);opacity:.7;}
+
+.fn-output-panel{
+  background:rgba(74,222,128,.07);border:2px solid var(--green);
+  min-width:140px;text-align:center;
+}
+.fn-output-panel .fn-panel-title{color:var(--green);}
+.fn-output-val{
+  font-size:32px;font-weight:900;color:#fff;
+  margin:8px 0 6px;font-family:monospace;word-break:break-all;
+  transition:opacity .15s;
+}
+.fn-output-type{
+  display:inline-block;font-size:10px;font-weight:700;
+  background:rgba(74,222,128,.2);color:var(--green);
+  border-radius:4px;padding:2px 8px;letter-spacing:.06em;
+}
+@keyframes fnFlash{0%{opacity:.3;transform:scale(.9)}60%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+.fn-flash{animation:fnFlash .35s cubic-bezier(.34,1.56,.64,1);}
+
+.fn-arrow{
+  font-size:28px;color:var(--muted);user-select:none;
+  transition:color .3s;flex-shrink:0;
+}
+.fn-arrow-active{color:var(--accent);}
+
+.fn-code-preview{margin-top:16px;}
+
+/* ══════════════════════
+   클래스 시각화
+══════════════════════ */
+:root{--box-cls:#f472b6;}
+
+.cls-preset-row{display:flex;flex-wrap:wrap;gap:8px;}
+.cls-chip{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;
+  color:var(--muted);cursor:pointer;transition:all .15s;
+}
+.cls-chip:hover{border-color:#f472b6;color:#f472b6;}
+.cls-chip.active{background:rgba(244,114,182,.15);border-color:#f472b6;color:#f472b6;}
+
+.cls-mold{
+  background:linear-gradient(145deg,#1a0a14,#120810);
+  border:2px solid #f472b6;border-radius:16px;overflow:hidden;
+  margin-bottom:24px;box-shadow:0 0 30px rgba(244,114,182,.18);
+}
+.cls-mold-hdr{
+  background:rgba(244,114,182,.18);border-bottom:1px solid rgba(244,114,182,.3);
+  padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.cls-mold-badge{
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:#f472b6;background:rgba(244,114,182,.15);
+  border:1px solid rgba(244,114,182,.3);border-radius:10px;padding:3px 10px;
+}
+.cls-mold-name{
+  font-size:17px;font-weight:800;color:#fda4c8;font-family:monospace;
+}
+.cls-mold-section{padding:16px 20px;border-bottom:1px dashed rgba(244,114,182,.15);}
+.cls-mold-section:last-child{border-bottom:none;}
+.cls-section-hd{
+  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.cls-section-hd.shared{color:var(--accent3);}
+.cls-section-hd.own{color:var(--blue);}
+.cls-section-hd.method{color:var(--green);}
+
+.cls-var-item{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);
+  border-radius:8px;padding:6px 12px;margin:4px;font-family:monospace;font-size:13px;
+}
+.cls-var-name{color:var(--accent3);font-weight:700;}
+.cls-var-eq{color:var(--muted);}
+.cls-var-val{color:var(--green);}
+.cls-shared-tag{
+  font-size:9px;font-weight:700;background:rgba(245,158,11,.2);
+  color:var(--accent3);border-radius:4px;padding:1px 5px;margin-left:4px;
+}
+
+.cls-inst-slot{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(96,165,250,.08);border:1px dashed rgba(96,165,250,.3);
+  border-radius:8px;padding:6px 12px;margin:4px;font-family:monospace;font-size:13px;
+}
+.cls-inst-slot-name{color:var(--blue);font-weight:700;}
+.cls-inst-slot-q{color:var(--muted);}
+
+.cls-method-tag{
+  display:inline-block;
+  background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);
+  border-radius:8px;padding:5px 12px;margin:4px;
+  font-family:monospace;font-size:12px;color:var(--green);font-weight:700;
+}
+
+/* 인스턴스 카드 */
+.cls-instances-wrap{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:24px;margin-bottom:20px;
+}
+.cls-instances-label{
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;
+}
+.cls-instances-grid{display:flex;flex-wrap:wrap;gap:16px;}
+.inst-card{
+  background:linear-gradient(145deg,#0a1a0a,#060d06);
+  border:2px solid var(--green);border-radius:14px;padding:18px;
+  min-width:155px;max-width:200px;
+  animation:popIn .35s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.inst-fish{font-size:30px;text-align:center;margin-bottom:10px;line-height:1;}
+.inst-num{
+  position:absolute;top:8px;right:10px;
+  font-size:10px;color:var(--muted);font-family:monospace;
+}
+.inst-attr-row{
+  display:flex;justify-content:space-between;gap:8px;
+  font-size:12px;font-family:monospace;margin:5px 0;
+  padding:3px 0;border-bottom:1px dashed rgba(74,222,128,.1);
+}
+.inst-attr-row:last-of-type{border-bottom:none;}
+.inst-attr-k{color:var(--blue);}
+.inst-attr-v{color:var(--green);font-weight:700;}
+.inst-class-badge{
+  margin-top:10px;font-size:10px;
+  background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.25);
+  border-radius:6px;padding:4px 8px;font-family:monospace;color:#f472b6;
+  text-align:center;
+}
+.inst-methods{margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;}
+.inst-method-btn{
+  background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);
+  border-radius:6px;color:var(--green);font-size:10px;font-weight:700;
+  padding:3px 8px;cursor:pointer;font-family:monospace;transition:background .15s;
+}
+.inst-method-btn:hover{background:rgba(74,222,128,.25);}
+.inst-method-result{
+  margin-top:8px;background:rgba(74,222,128,.07);border-radius:6px;
+  padding:6px 8px;font-size:11px;font-family:monospace;color:var(--green);
+  min-height:22px;word-break:break-word;
+}
+
+/* 빈 인스턴스 안내 */
+.cls-empty{
+  color:var(--muted);font-size:14px;text-align:center;padding:20px 0;width:100%;
+}
+
+/* ── 반응형 ── */
+@media(max-width:600px){
+  nav.tabs button{padding:12px 12px;font-size:13px;}
+  .memory-diagram{flex-direction:column;}
+  .instance-grid{grid-template-columns:1fr;}
+  .fn-machine-layout{min-width:320px;flex-wrap:wrap;}
+  .fn-panel{min-width:140px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Interactive Visualization</div>
+  <h1>파이썬 개념 탐험기</h1>
+  <p>변수 · 리스트 · 함수 · 클래스 — 직접 조작하며 배우는 파이썬 핵심 개념</p>
+</header>
+
+<nav class="tabs">
+  <button class="active" onclick="switchTab('var')">📦 변수</button>
+  <button onclick="switchTab('list1d')">🔢 1차원 리스트</button>
+  <button onclick="switchTab('list2d')">📊 2차원 리스트</button>
+  <button onclick="switchTab('func')">🔧 함수</button>
+  <button onclick="switchTab('cls')">🏗️ 클래스</button>
+  <button onclick="switchTab('compare')">🔍 전체 정리</button>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════════
+     탭 1 · 변수
+══════════════════════════════════ -->
+<div class="tab-panel active" id="tab-var">
+  <div class="section-intro">
+    <div class="section-label">Chapter 01</div>
+    <h2>📦 변수 — 이름표가 붙은 상자</h2>
+    <p>변수는 데이터를 저장하는 공간입니다. 상자 안에 값을 넣고, 그 상자에 이름표를 붙인다고 생각하세요.<br>
+    이름표(변수명)를 부르면 언제든 상자 안의 값을 꺼낼 수 있어요.</p>
+  </div>
+
+  <div class="control-panel">
+    <h3>⚙ 변수 만들기</h3>
+    <div class="ctrl-row">
+      <label class="ctrl-label">변수 이름</label>
+      <input type="text" id="var-name" placeholder="예: score" maxlength="20"/>
+      <label class="ctrl-label" style="min-width:40px">값</label>
+      <input type="text" id="var-value" placeholder="예: 95" maxlength="20"/>
+      <button class="btn" onclick="addVariable()">+ 추가</button>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn btn-ghost btn-sm" onclick="loadVarPreset()">예시 불러오기</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearVars()">전체 지우기</button>
+    </div>
+  </div>
+
+  <div class="var-stage" id="var-stage">
+    <div class="var-empty" id="var-empty">위에서 변수를 추가하면 여기에 상자가 나타납니다 ✨</div>
+  </div>
+
+  <div class="tip">
+    <strong>핵심 개념</strong> — 변수를 만드는 것 = 이름표가 붙은 상자를 메모리(기억 공간)에 놓는 것. 값을 바꾸면 상자 안의 내용물만 교체됩니다.
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr">
+      <div class="dots"><span class="d-r"></span><span class="d-y"></span><span class="d-g"></span></div>
+      <span class="code-fname">variables.py</span>
+    </div>
+    <pre><code><span class="cmt"># 변수 = 이름표 + 상자</span>
+name  <span class="op">=</span> <span class="str">"홍길동"</span>   <span class="cmt"># str 타입</span>
+age   <span class="op">=</span> <span class="num">17</span>        <span class="cmt"># int 타입</span>
+score <span class="op">=</span> <span class="num">98.5</span>     <span class="cmt"># float 타입</span>
+pass_ <span class="op">=</span> <span class="kw">True</span>     <span class="cmt"># bool 타입</span>
+
+<span class="cmt"># 값 바꾸기 = 상자 안 내용물 교체</span>
+score <span class="op">=</span> <span class="num">100</span>
+<span class="fn">print</span>(score)  <span class="cmt"># 100</span></code></pre>
+  </div>
+
+  <div class="quiz">
+    <h4>📝 확인 문제</h4>
+    <p><code>x = 10</code>을 실행한 뒤 <code>x = 20</code>을 실행하면 x의 값은?</p>
+    <div class="quiz-opts">
+      <div class="qopt" onclick="checkQ(this,false)">10</div>
+      <div class="qopt" onclick="checkQ(this,true)">20</div>
+      <div class="qopt" onclick="checkQ(this,false)">10과 20 둘 다</div>
+      <div class="qopt" onclick="checkQ(this,false)">오류 발생</div>
+    </div>
+    <div class="qfb"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     탭 2 · 1차원 리스트
+══════════════════════════════════ -->
+<div class="tab-panel" id="tab-list1d">
+  <div class="section-intro">
+    <div class="section-label">Chapter 02</div>
+    <h2>🔢 1차원 리스트 — 나란히 놓인 상자들</h2>
+    <p>리스트는 여러 값을 하나의 이름으로 묶어서 관리하는 자료구조입니다.<br>
+    각 상자에는 <strong>인덱스(index)</strong>라는 번호가 붙어 있고, 0번부터 시작합니다.</p>
+  </div>
+
+  <div class="control-panel">
+    <h3>⚙ 리스트 만들기</h3>
+    <div class="ctrl-row">
+      <label class="ctrl-label">리스트 이름</label>
+      <input type="text" id="l1-name" value="scores" maxlength="16"/>
+    </div>
+    <div class="ctrl-row">
+      <label class="ctrl-label">값 목록</label>
+      <input type="text" id="l1-values" value="85, 92, 78, 95, 88" placeholder="쉼표로 구분: 10, 20, 30"/>
+      <button class="btn" onclick="renderList1D()">시각화</button>
+    </div>
+    <div class="ctrl-row highlight-idx">
+      <label class="ctrl-label">인덱스 강조</label>
+      <input type="number" id="l1-hl" min="0" value="" placeholder="번호"/>
+      <button class="btn btn-ghost btn-sm" onclick="highlightCell1D()">강조</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearHighlight1D()">해제</button>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn btn-ghost btn-sm" onclick="loadList1DPreset('int')">정수 예시</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadList1DPreset('str')">문자열 예시</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadList1DPreset('mixed')">혼합 예시</button>
+    </div>
+  </div>
+
+  <div class="list1d-stage" id="list1d-stage">
+    <div class="list1d-empty" id="list1d-empty">위에서 값을 입력하고 '시각화' 버튼을 눌러 보세요 ✨</div>
+  </div>
+
+  <div id="list1d-info" style="margin-top:16px;display:none">
+    <div class="idx-arrow-wrap" id="hl-info"></div>
+  </div>
+
+  <div class="tip">
+    <strong>인덱스는 0부터!</strong> — 리스트의 첫 번째 원소의 인덱스는 <strong>0</strong>입니다. 원소가 5개라면 인덱스는 0, 1, 2, 3, 4까지예요. <br>
+    음수 인덱스 <code>-1</code>은 마지막 원소, <code>-2</code>는 뒤에서 두 번째를 가리킵니다.
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr">
+      <div class="dots"><span class="d-r"></span><span class="d-y"></span><span class="d-g"></span></div>
+      <span class="code-fname">list_1d.py</span>
+    </div>
+    <pre><code><span class="cmt"># 리스트 만들기</span>
+scores <span class="op">=</span> [<span class="num">85</span>, <span class="num">92</span>, <span class="num">78</span>, <span class="num">95</span>, <span class="num">88</span>]
+
+<span class="cmt"># 인덱스로 접근</span>
+<span class="fn">print</span>(scores[<span class="num">0</span>])   <span class="cmt"># 85  (첫 번째)</span>
+<span class="fn">print</span>(scores[<span class="num">2</span>])   <span class="cmt"># 78  (세 번째)</span>
+<span class="fn">print</span>(scores[<span class="op">-</span><span class="num">1</span>])  <span class="cmt"># 88  (마지막)</span>
+
+<span class="cmt"># 값 변경</span>
+scores[<span class="num">1</span>] <span class="op">=</span> <span class="num">100</span>
+
+<span class="cmt"># 추가 / 삭제</span>
+scores<span class="op">.</span><span class="fn">append</span>(<span class="num">70</span>)   <span class="cmt"># 끝에 추가</span>
+scores<span class="op">.</span><span class="fn">pop</span>()         <span class="cmt"># 끝 원소 제거</span>
+
+<span class="cmt"># 길이</span>
+<span class="fn">print</span>(<span class="fn">len</span>(scores))   <span class="cmt"># 5</span></code></pre>
+  </div>
+
+  <div class="quiz">
+    <h4>📝 확인 문제</h4>
+    <p><code>fruits = ["사과", "바나나", "딸기"]</code>일 때, <code>fruits[1]</code>의 값은?</p>
+    <div class="quiz-opts">
+      <div class="qopt" onclick="checkQ(this,false)">사과</div>
+      <div class="qopt" onclick="checkQ(this,true)">바나나</div>
+      <div class="qopt" onclick="checkQ(this,false)">딸기</div>
+      <div class="qopt" onclick="checkQ(this,false)">오류 발생</div>
+    </div>
+    <div class="qfb"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     탭 3 · 2차원 리스트
+══════════════════════════════════ -->
+<div class="tab-panel" id="tab-list2d">
+  <div class="section-intro">
+    <div class="section-label">Chapter 03</div>
+    <h2>📊 2차원 리스트 — 격자(표) 형태</h2>
+    <p>2차원 리스트는 <strong>리스트 안에 리스트</strong>를 넣은 구조입니다.<br>
+    행(row)과 열(column) 두 개의 인덱스로 원소를 찾아요. 마치 엑셀 표처럼요!</p>
+  </div>
+
+  <div class="control-panel">
+    <h3>⚙ 2차원 리스트 만들기</h3>
+    <div class="ctrl-row">
+      <label class="ctrl-label">행 수</label>
+      <input type="number" id="l2-rows" value="3" min="1" max="6"/>
+      <label class="ctrl-label" style="min-width:40px">열 수</label>
+      <input type="number" id="l2-cols" value="4" min="1" max="7"/>
+      <button class="btn btn-ghost btn-sm" onclick="resizeGrid()">격자 크기 변경</button>
+    </div>
+    <div id="grid2d-inputs" class="grid2d-inputs"></div>
+    <div class="ctrl-row" style="margin-top:8px">
+      <button class="btn" onclick="renderGrid2D()">시각화</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadGrid2DPreset('score')">성적표 예시</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadGrid2DPreset('map')">지도 예시</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadGrid2DPreset('chess')">체스판 예시</button>
+    </div>
+    <div class="ctrl-row grid-ctrl-row" style="margin-top:12px">
+      <label class="ctrl-label">강조할 행</label>
+      <input type="number" id="l2-hl-r" min="0" value="" placeholder="행"/>
+      <label class="ctrl-label" style="min-width:40px">열</label>
+      <input type="number" id="l2-hl-c" min="0" value="" placeholder="열"/>
+      <button class="btn btn-ghost btn-sm" onclick="highlightCell2D()">셀 강조</button>
+      <button class="btn btn-ghost btn-sm" onclick="highlightRow2D()">행 강조</button>
+      <button class="btn btn-ghost btn-sm" onclick="highlightCol2D()">열 강조</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearHighlight2D()">해제</button>
+    </div>
+  </div>
+
+  <div class="list2d-stage" id="list2d-stage">
+    <p style="color:var(--muted);font-size:14px">격자 설정 후 '시각화' 버튼을 눌러 보세요 ✨</p>
+  </div>
+
+  <div id="l2-code-preview" style="margin-top:16px;display:none">
+    <div class="code-block">
+      <div class="code-hdr">
+        <div class="dots"><span class="d-r"></span><span class="d-y"></span><span class="d-g"></span></div>
+        <span class="code-fname">현재 리스트 코드</span>
+      </div>
+      <pre><code id="l2-code-content"></code></pre>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>접근 방법: <code>리스트[행][열]</code></strong> — 먼저 몇 번째 행인지, 그다음 몇 번째 열인지 순서대로 씁니다. 예: <code>matrix[1][2]</code>는 2행(인덱스 1) 3열(인덱스 2)의 값이에요.
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr">
+      <div class="dots"><span class="d-r"></span><span class="d-y"></span><span class="d-g"></span></div>
+      <span class="code-fname">list_2d.py</span>
+    </div>
+    <pre><code><span class="cmt"># 2차원 리스트 = 리스트의 리스트</span>
+matrix <span class="op">=</span> [
+    [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>],   <span class="cmt"># 0행</span>
+    [<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>],   <span class="cmt"># 1행</span>
+    [<span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span>],   <span class="cmt"># 2행</span>
+]
+
+<span class="cmt"># [행][열] 순서로 접근</span>
+<span class="fn">print</span>(matrix[<span class="num">0</span>][<span class="num">0</span>])  <span class="cmt"># 1  (0행 0열)</span>
+<span class="fn">print</span>(matrix[<span class="num">1</span>][<span class="num">2</span>])  <span class="cmt"># 6  (1행 2열)</span>
+<span class="fn">print</span>(matrix[<span class="num">2</span>][<span class="num">1</span>])  <span class="cmt"># 8  (2행 1열)</span>
+
+<span class="cmt"># 전체 순회</span>
+<span class="kw">for</span> row <span class="kw">in</span> matrix<span class="op">:</span>
+    <span class="kw">for</span> val <span class="kw">in</span> row<span class="op">:</span>
+        <span class="fn">print</span>(val, end<span class="op">=</span><span class="str">" "</span>)
+    <span class="fn">print</span>()  <span class="cmt"># 줄바꿈</span></code></pre>
+  </div>
+
+  <div class="quiz">
+    <h4>📝 확인 문제</h4>
+    <p><code>grid = [[1,2,3],[4,5,6],[7,8,9]]</code>일 때, <code>grid[2][0]</code>의 값은?</p>
+    <div class="quiz-opts">
+      <div class="qopt" onclick="checkQ(this,false)">3</div>
+      <div class="qopt" onclick="checkQ(this,false)">4</div>
+      <div class="qopt" onclick="checkQ(this,true)">7</div>
+      <div class="qopt" onclick="checkQ(this,false)">9</div>
+    </div>
+    <div class="qfb"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     탭 4 · 함수
+══════════════════════════════════ -->
+<div class="tab-panel" id="tab-func">
+  <div class="section-intro">
+    <div class="section-label">Chapter 04</div>
+    <h2>🔧 함수 — 입력을 넣으면 출력이 나오는 기계</h2>
+    <p>함수는 특정 작업을 수행하는 코드 묶음입니다. <strong>매개변수(parameter)</strong>를 입력으로 받아
+    계산한 뒤 <strong>반환값(return value)</strong>을 내보내는 기계라고 생각하세요.<br>
+    아래에서 함수를 골라 값을 바꿔 보면 출력이 실시간으로 바뀝니다!</p>
+  </div>
+
+  <div class="control-panel">
+    <h3>⚙ 함수 선택</h3>
+    <div class="fn-preset-row" id="fn-preset-row"></div>
+    <div style="margin-top:12px;font-size:13px;color:var(--muted)" id="fn-desc-text"></div>
+  </div>
+
+  <div class="fn-stage" id="fn-stage">
+    <div class="fn-machine-layout" id="fn-machine-layout">
+      <!-- 파라미터 패널 -->
+      <div class="fn-panel fn-params-panel">
+        <div class="fn-panel-title">📥 입력 (매개변수)</div>
+        <div id="fn-param-inputs"></div>
+      </div>
+
+      <!-- 왼쪽 화살표 -->
+      <div class="fn-arrow" id="fn-arrow-l">→</div>
+
+      <!-- 함수 본체 -->
+      <div class="fn-panel fn-body-panel" id="fn-body-panel">
+        <div class="fn-panel-title">⚙ 함수 처리 중</div>
+        <div class="fn-gear" id="fn-gear">⚙</div>
+        <div class="fn-def-line" id="fn-def-line"></div>
+        <div class="fn-body-line" id="fn-body-line"></div>
+      </div>
+
+      <!-- 오른쪽 화살표 -->
+      <div class="fn-arrow" id="fn-arrow-r">→</div>
+
+      <!-- 출력 패널 -->
+      <div class="fn-panel fn-output-panel">
+        <div class="fn-panel-title">📤 출력 (반환값)</div>
+        <div class="fn-output-val" id="fn-output-val">—</div>
+        <div class="fn-output-type" id="fn-output-type">…</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="fn-code-wrap">
+    <div class="code-block">
+      <div class="code-hdr">
+        <div class="dots"><span class="d-r"></span><span class="d-y"></span><span class="d-g"></span></div>
+        <span class="code-fname" id="fn-code-filename">function.py</span>
+      </div>
+      <pre><code id="fn-code-body"></code></pre>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>함수의 핵심 3요소</strong> —
+    <strong style="color:var(--accent)">① 함수 이름</strong> (호출할 때 사용),
+    <strong style="color:var(--blue)">② 매개변수</strong> (입력값을 받는 변수),
+    <strong style="color:var(--green)">③ return</strong> (결과를 돌려주는 키워드).
+    <code>return</code> 없이 끝나면 자동으로 <code>None</code>을 반환합니다.
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr">
+      <div class="dots"><span class="d-r"></span><span class="d-y"></span><span class="d-g"></span></div>
+      <span class="code-fname">function_basics.py</span>
+    </div>
+    <pre><code><span class="cmt"># 함수 정의</span>
+<span class="kw">def</span> <span class="fn">add</span>(a, b):
+    <span class="kw">return</span> a <span class="op">+</span> b
+
+<span class="cmt"># 함수 호출 — 소괄호 안에 인수(argument)를 넣는다</span>
+result <span class="op">=</span> <span class="fn">add</span>(<span class="num">3</span>, <span class="num">4</span>)
+<span class="fn">print</span>(result)   <span class="cmt"># 7</span>
+
+<span class="cmt"># 기본값 매개변수</span>
+<span class="kw">def</span> <span class="fn">greet</span>(name, age<span class="op">=</span><span class="num">17</span>):
+    <span class="kw">return</span> <span class="str">f"안녕하세요, {name}! {age}살이군요!"</span>
+
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="str">"민수"</span>))       <span class="cmt"># age=17 기본값 사용</span>
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="str">"지영"</span>, <span class="num">19</span>))  <span class="cmt"># age=19 지정</span></code></pre>
+  </div>
+
+  <div class="quiz">
+    <h4>📝 확인 문제</h4>
+    <p><code>def square(n): return n * n</code>에서 <code>square(5)</code>의 반환값은?</p>
+    <div class="quiz-opts">
+      <div class="qopt" onclick="checkQ(this,false)">5</div>
+      <div class="qopt" onclick="checkQ(this,false)">10</div>
+      <div class="qopt" onclick="checkQ(this,true)">25</div>
+      <div class="qopt" onclick="checkQ(this,false)">오류 발생</div>
+    </div>
+    <div class="qfb"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     탭 5 · 클래스
+══════════════════════════════════ -->
+<div class="tab-panel" id="tab-cls">
+  <div class="section-intro">
+    <div class="section-label">Chapter 05</div>
+    <h2>🏗️ 클래스 — 붕어빵 틀과 붕어빵</h2>
+    <p>클래스(class)는 <strong>붕어빵 틀</strong>, 인스턴스(instance)는 그 틀로 찍어낸 <strong>붕어빵</strong>이에요.<br>
+    같은 틀(클래스)에서 나왔지만, 각 붕어빵(인스턴스)은 속 재료(속성값)가 다를 수 있습니다.<br>
+    아래에서 클래스를 고르고, 붕어빵을 직접 만들어 보세요! 🐟</p>
+  </div>
+
+  <div class="control-panel">
+    <h3>⚙ 클래스 템플릿 선택</h3>
+    <div class="cls-preset-row">
+      <button class="cls-chip active" onclick="loadClassPreset('student')">🎓 학생(Student)</button>
+      <button class="cls-chip" onclick="loadClassPreset('animal')">🐾 동물(Animal)</button>
+      <button class="cls-chip" onclick="loadClassPreset('rect')">📐 사각형(Rectangle)</button>
+    </div>
+    <div class="ctrl-row" style="margin-top:14px">
+      <label class="ctrl-label">클래스 변수 값</label>
+      <input type="text" id="cls-classvar-val" value="파이썬고등학교" style="width:200px"/>
+      <button class="btn btn-ghost btn-sm" onclick="renderClassMold()">틀 업데이트</button>
+    </div>
+  </div>
+
+  <!-- 붕어빵 틀 시각화 -->
+  <div class="cls-mold" id="cls-mold">
+    <div class="cls-mold-hdr">
+      <span style="font-size:22px">🔨</span>
+      <div>
+        <div class="cls-mold-badge">붕어빵 틀 — 클래스 정의</div>
+        <div class="cls-mold-name" id="cls-mold-classname">class Student:</div>
+      </div>
+    </div>
+    <div class="cls-mold-section">
+      <div class="cls-section-hd shared">🔒 클래스 변수 — 모든 인스턴스가 공유하는 값</div>
+      <div id="cls-class-vars-display"></div>
+    </div>
+    <div class="cls-mold-section">
+      <div class="cls-section-hd own">📝 인스턴스 변수 — 인스턴스마다 다른 값 (빈 칸은 생성 시 채워짐)</div>
+      <div id="cls-inst-slots-display"></div>
+    </div>
+    <div class="cls-mold-section">
+      <div class="cls-section-hd method">⚙ 메서드 — 모든 인스턴스가 공유하는 기능</div>
+      <div id="cls-methods-display"></div>
+    </div>
+  </div>
+
+  <!-- 인스턴스 생성 폼 -->
+  <div class="control-panel" id="cls-create-panel">
+    <h3 id="cls-create-title">🐟 새 붕어빵 굽기 (인스턴스 생성)</h3>
+    <div id="cls-inst-form" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" style="background:#be185d" onclick="createInstance()">🔥 붕어빵 굽기!</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearInstances()">전체 지우기</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadInstancePresets()">예시 3개 한번에</button>
+    </div>
+  </div>
+
+  <!-- 생성된 인스턴스들 -->
+  <div class="cls-instances-wrap" id="cls-instances-wrap">
+    <div class="cls-instances-label">🐟 생성된 붕어빵 (인스턴스들)</div>
+    <div class="cls-instances-grid" id="cls-instances-grid">
+      <div class="cls-empty" id="cls-empty">아직 붕어빵이 없어요. 위에서 만들어 보세요! 🍞</div>
+    </div>
+  </div>
+
+  <!-- 코드 미리보기 -->
+  <div class="code-block" id="cls-code-block">
+    <div class="code-hdr">
+      <div class="dots"><span class="d-r"></span><span class="d-y"></span><span class="d-g"></span></div>
+      <span class="code-fname" id="cls-code-filename">class_example.py</span>
+    </div>
+    <pre><code id="cls-code-body"></code></pre>
+  </div>
+
+  <div class="tip">
+    <strong>클래스 변수 vs 인스턴스 변수</strong> —
+    <strong style="color:var(--accent3)">클래스 변수</strong>는 클래스 이름 바로 아래에 선언하고 <em>모든 인스턴스가 공유</em>합니다.
+    <strong style="color:var(--blue)">인스턴스 변수</strong>는 <code>self.변수명</code>으로 선언하고 <em>각 인스턴스마다 따로</em> 저장됩니다.
+  </div>
+
+  <div class="quiz">
+    <h4>📝 확인 문제</h4>
+    <p>클래스로 두 개의 인스턴스 <code>a</code>, <code>b</code>를 만들었을 때, <code>a.name = "홍길동"</code>으로 바꾸면 <code>b.name</code>은?</p>
+    <div class="quiz-opts">
+      <div class="qopt" onclick="checkQ(this,false)">함께 "홍길동"으로 바뀐다</div>
+      <div class="qopt" onclick="checkQ(this,true)">b.name은 그대로다 (인스턴스 변수는 독립)</div>
+      <div class="qopt" onclick="checkQ(this,false)">오류가 발생한다</div>
+      <div class="qopt" onclick="checkQ(this,false)">None이 된다</div>
+    </div>
+    <div class="qfb"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     탭 6 · 전체 정리 (구 탭 4)
+══════════════════════════════════ -->
+<div class="tab-panel" id="tab-compare">
+  <div class="section-intro">
+    <div class="section-label">Chapter 06</div>
+    <h2>🔍 전체 개념 비교 정리</h2>
+    <p>변수, 리스트, 함수, 클래스까지 — 배운 개념을 한 화면에서 비교해 봐요.</p>
+  </div>
+
+  <div class="memory-diagram">
+    <div class="memory-col">
+      <h4>📦 변수 — 하나의 상자</h4>
+      <div class="mem-box">
+        <div class="mem-address">메모리 0x1A2</div>
+        <div class="mem-item"><span class="mem-key">score</span><span class="mem-val">95</span></div>
+        <div class="mem-item"><span class="mem-key">name</span><span class="mem-val">"민준"</span></div>
+        <div class="mem-item"><span class="mem-key">passed</span><span class="mem-val">True</span></div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--muted)">하나의 이름 = 하나의 값</div>
+    </div>
+    <div class="memory-col">
+      <h4>🔢 1차원 — 상자들의 줄</h4>
+      <div class="mem-box">
+        <div class="mem-address">연속된 메모리</div>
+        <div class="mem-item"><span class="mem-key">[0]</span><span class="mem-val">85</span></div>
+        <div class="mem-item"><span class="mem-key">[1]</span><span class="mem-val">92</span></div>
+        <div class="mem-item"><span class="mem-key">[2]</span><span class="mem-val">78</span></div>
+        <div class="mem-item"><span class="mem-key">[3]</span><span class="mem-val">95</span></div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--muted)">하나의 이름, 인덱스로 구분</div>
+    </div>
+    <div class="memory-col">
+      <h4>📊 2차원 — 표 형태</h4>
+      <div class="mem-box">
+        <div class="mem-address">행 × 열 구조</div>
+        <div class="mem-item"><span class="mem-key">[0][0]</span><span class="mem-val">1</span></div>
+        <div class="mem-item"><span class="mem-key">[0][1]</span><span class="mem-val">2</span></div>
+        <div class="mem-item"><span class="mem-key">[1][0]</span><span class="mem-val">4</span></div>
+        <div class="mem-item"><span class="mem-key">[1][1]</span><span class="mem-val">5</span></div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--muted)">행·열 두 인덱스로 접근</div>
+    </div>
+  </div>
+
+  <!-- 비교 표 -->
+  <table style="width:100%;border-collapse:collapse;margin:24px 0;font-size:14px;">
+    <thead>
+      <tr style="background:var(--surface2)">
+        <th style="padding:12px 14px;text-align:left;border-bottom:2px solid var(--border);color:var(--muted);font-size:12px;letter-spacing:.08em">구분</th>
+        <th style="padding:12px 14px;text-align:center;border-bottom:2px solid var(--border);color:#c084fc">변수</th>
+        <th style="padding:12px 14px;text-align:center;border-bottom:2px solid var(--border);color:var(--accent2)">1차원 리스트</th>
+        <th style="padding:12px 14px;text-align:center;border-bottom:2px solid var(--border);color:var(--accent3)">2차원 리스트</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:11px 14px;color:var(--muted)">저장하는 값</td>
+        <td style="padding:11px 14px;text-align:center">값 1개</td>
+        <td style="padding:11px 14px;text-align:center">값 여러 개 (한 줄)</td>
+        <td style="padding:11px 14px;text-align:center">값 여러 개 (행×열)</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)">
+        <td style="padding:11px 14px;color:var(--muted)">접근 방법</td>
+        <td style="padding:11px 14px;text-align:center;font-family:monospace">x</td>
+        <td style="padding:11px 14px;text-align:center;font-family:monospace">x[i]</td>
+        <td style="padding:11px 14px;text-align:center;font-family:monospace">x[i][j]</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:11px 14px;color:var(--muted)">인덱스 개수</td>
+        <td style="padding:11px 14px;text-align:center">0개</td>
+        <td style="padding:11px 14px;text-align:center">1개</td>
+        <td style="padding:11px 14px;text-align:center">2개 (행, 열)</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)">
+        <td style="padding:11px 14px;color:var(--muted)">비유</td>
+        <td style="padding:11px 14px;text-align:center">상자 1개</td>
+        <td style="padding:11px 14px;text-align:center">서랍 한 줄</td>
+        <td style="padding:11px 14px;text-align:center">엑셀 스프레드시트</td>
+      </tr>
+      <tr>
+        <td style="padding:11px 14px;color:var(--muted)">주요 활용</td>
+        <td style="padding:11px 14px;text-align:center">단일 값 저장</td>
+        <td style="padding:11px 14px;text-align:center">성적, 목록 등</td>
+        <td style="padding:11px 14px;text-align:center">행렬, 지도, 좌석표</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <strong>자주 하는 실수</strong> — 리스트 인덱스를 1부터 세는 실수! 파이썬은 무조건 <strong>0부터</strong> 시작합니다. 원소가 5개인 리스트는 인덱스 0 ~ 4, 5번 인덱스를 쓰면 오류가 납니다.
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr">
+      <div class="dots"><span class="d-r"></span><span class="d-y"></span><span class="d-g"></span></div>
+      <span class="code-fname">summary.py</span>
+    </div>
+    <pre><code><span class="cmt"># ─── 변수 ───</span>
+age <span class="op">=</span> <span class="num">17</span>
+<span class="fn">print</span>(age)           <span class="cmt"># 17</span>
+
+<span class="cmt"># ─── 1차원 리스트 ───</span>
+scores <span class="op">=</span> [<span class="num">85</span>, <span class="num">92</span>, <span class="num">78</span>]
+<span class="fn">print</span>(scores[<span class="num">0</span>])    <span class="cmt"># 85</span>
+<span class="fn">print</span>(<span class="fn">len</span>(scores))  <span class="cmt"># 3</span>
+
+<span class="cmt"># ─── 2차원 리스트 ───</span>
+seats <span class="op">=</span> [
+    [<span class="str">"A1"</span>, <span class="str">"A2"</span>, <span class="str">"A3"</span>],
+    [<span class="str">"B1"</span>, <span class="str">"B2"</span>, <span class="str">"B3"</span>],
+]
+<span class="fn">print</span>(seats[<span class="num">0</span>][<span class="num">2</span>])  <span class="cmt"># "A3"  (0행 2열)</span>
+<span class="fn">print</span>(seats[<span class="num">1</span>][<span class="num">0</span>])  <span class="cmt"># "B1"  (1행 0열)</span>
+
+<span class="cmt"># 행의 수, 열의 수</span>
+<span class="fn">print</span>(<span class="fn">len</span>(seats))      <span class="cmt"># 2  (행)</span>
+<span class="fn">print</span>(<span class="fn">len</span>(seats[<span class="num">0</span>]))  <span class="cmt"># 3  (열)</span></code></pre>
+  </div>
+
+  <div class="quiz">
+    <h4>📝 최종 확인 문제</h4>
+    <p><code>table = [[10,20],[30,40],[50,60]]</code>에서 값 <code>40</code>에 접근하는 코드는?</p>
+    <div class="quiz-opts">
+      <div class="qopt" onclick="checkQ(this,false)">table[1][0]</div>
+      <div class="qopt" onclick="checkQ(this,true)">table[1][1]</div>
+      <div class="qopt" onclick="checkQ(this,false)">table[2][0]</div>
+      <div class="qopt" onclick="checkQ(this,false)">table[0][1]</div>
+    </div>
+    <div class="qfb"></div>
+  </div>
+</div>
+
+</main>
+
+<footer style="border-top:1px solid var(--border);text-align:center;padding:28px;font-size:12px;color:var(--muted)">
+  파이썬 개념 탐험기 &nbsp;·&nbsp; 변수 · 리스트 · 함수 · 클래스 시각화 학습
+</footer>
+
+<script>
+/* ══════════════════
+   탭 전환
+══════════════════ */
+function switchTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  const idx={'var':0,'list1d':1,'list2d':2,'func':3,'cls':4,'compare':5}[id];
+  document.querySelectorAll('nav.tabs button')[idx].classList.add('active');
+  if(id==='list2d') initGrid();
+  if(id==='func') initFuncTab();
+  if(id==='cls') renderClassMold();
+}
+
+/* ══════════════════
+   퀴즈
+══════════════════ */
+function checkQ(el,ok){
+  const grp=el.closest('.quiz-opts');
+  const fb=el.closest('.quiz').querySelector('.qfb');
+  if(grp.querySelector('.correct')||grp.querySelector('.wrong-locked')) return;
+  grp.querySelectorAll('.qopt').forEach(o=>o.style.pointerEvents='none');
+  if(ok){
+    el.classList.add('correct');
+    fb.innerHTML='<span style="color:#4ade80">✓ 정답입니다!</span>';
+  } else {
+    el.classList.add('wrong');
+    fb.innerHTML='<span style="color:#f87171">✗ 다시 생각해 보세요.</span>';
+    grp.querySelectorAll('.qopt').forEach(o=>o.style.pointerEvents='');
+    el.style.pointerEvents='none';
+    el.classList.add('wrong-locked');
+  }
+}
+
+/* ══════════════════
+   변수 탭
+══════════════════ */
+let vars=[];
+function getType(v){
+  if(v==='True'||v==='False') return 'bool';
+  if(!isNaN(v)&&v.includes('.')) return 'float';
+  if(!isNaN(v)&&v!=='') return 'int';
+  return 'str';
+}
+function addVariable(){
+  const name=document.getElementById('var-name').value.trim();
+  const val=document.getElementById('var-value').value.trim();
+  if(!name||!val){alert('이름과 값을 모두 입력하세요.');return;}
+  if(!/^[a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*$/.test(name)){alert('변수 이름은 영문자, 한글, 밑줄로 시작해야 합니다.');return;}
+  const existing=vars.findIndex(v=>v.name===name);
+  if(existing>=0) vars[existing].val=val;
+  else vars.push({name,val});
+  renderVars();
+  document.getElementById('var-name').value='';
+  document.getElementById('var-value').value='';
+}
+function renderVars(){
+  const stage=document.getElementById('var-stage');
+  const empty=document.getElementById('var-empty');
+  if(vars.length===0){empty.style.display='block';stage.innerHTML='';stage.appendChild(empty);return;}
+  empty.style.display='none';
+  stage.innerHTML='';
+  vars.forEach((v,i)=>{
+    const type=getType(v.val);
+    const displayVal = type==='str'? `"${v.val}"` : v.val;
+    const wrap=document.createElement('div');
+    wrap.className='var-box-wrap';
+    wrap.innerHTML=`
+      <div class="var-nametag">${v.name}</div>
+      <div class="var-arrow">↓</div>
+      <div class="var-box" ondblclick="removeVar(${i})">
+        <div class="val">${displayVal.length>8?displayVal.slice(0,7)+'…':displayVal}</div>
+        <div class="type-badge">${type}</div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px">더블클릭 = 삭제</div>
+    `;
+    stage.appendChild(wrap);
+  });
+}
+function removeVar(i){vars.splice(i,1);renderVars();}
+function clearVars(){vars=[];renderVars();}
+function loadVarPreset(){
+  vars=[
+    {name:'name',val:'홍길동'},
+    {name:'age',val:'17'},
+    {name:'height',val:'172.5'},
+    {name:'passed',val:'True'},
+    {name:'score',val:'98'},
+  ];
+  renderVars();
+}
+
+/* ══════════════════
+   1차원 리스트 탭
+══════════════════ */
+let list1dData=[];
+function renderList1D(){
+  const raw=document.getElementById('l1-values').value;
+  const name=document.getElementById('l1-name').value.trim()||'myList';
+  const items=raw.split(',').map(s=>s.trim()).filter(s=>s!=='');
+  if(items.length===0){alert('값을 입력해 주세요.');return;}
+  list1dData=items;
+
+  const stage=document.getElementById('list1d-stage');
+  const empty=document.getElementById('list1d-empty');
+  if(empty) empty.style.display='none';
+  stage.innerHTML='';
+
+  const nameRow=document.createElement('div');
+  nameRow.className='list1d-name';
+  nameRow.innerHTML=`<span class="list1d-varname">${name}</span><span style="font-size:13px;color:var(--muted);font-family:monospace;">= [&nbsp;</span>`;
+  stage.appendChild(nameRow);
+
+  const container=document.createElement('div');
+  container.className='list1d-container';
+  container.id='list1d-container';
+
+  items.forEach((val,i)=>{
+    const wrap=document.createElement('div');
+    wrap.className='cell-wrap';
+    wrap.innerHTML=`
+      <div class="cell-label">${name}[${i}]</div>
+      <div class="cell" id="cell1d-${i}" title="${name}[${i}] = ${val}">
+        <span class="cval">${val.length>5?val.slice(0,4)+'…':val}</span>
+      </div>
+      <div class="cell-idx">[${i}]</div>
+    `;
+    container.appendChild(wrap);
+  });
+  stage.appendChild(container);
+
+  const closing=document.createElement('div');
+  closing.innerHTML=`<span style="font-size:13px;color:var(--muted);font-family:monospace;padding-left:8px;">&nbsp;]</span>`;
+  stage.appendChild(closing);
+
+  // 음수 인덱스 표시
+  const neg=document.createElement('div');
+  neg.style.cssText='margin-top:14px;display:flex;gap:0;padding-left:2px;';
+  items.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.style.cssText=`width:72px;text-align:center;font-size:10px;color:var(--muted);`;
+    d.textContent=`[-${items.length-i}]`;
+    neg.appendChild(d);
+  });
+  const negLabel=document.createElement('div');
+  negLabel.style.cssText='font-size:10px;color:var(--muted);margin-bottom:4px;';
+  negLabel.textContent='음수 인덱스:';
+  stage.appendChild(negLabel);
+  stage.appendChild(neg);
+}
+function highlightCell1D(){
+  clearHighlight1D();
+  const idx=parseInt(document.getElementById('l1-hl').value);
+  if(isNaN(idx)) return;
+  const actualIdx=idx<0?list1dData.length+idx:idx;
+  const cell=document.getElementById(`cell1d-${actualIdx}`);
+  if(cell){
+    cell.classList.add('hl-cell');
+    const info=document.getElementById('hl-info');
+    const name=document.getElementById('l1-name').value||'myList';
+    info.innerHTML=`<div class="idx-arrow-line">
+      <span class="arrow-badge">${name}[${idx}]</span>
+      <span style="color:var(--muted)"> = </span>
+      <span style="color:var(--green);font-family:monospace;font-weight:700">${list1dData[actualIdx]}</span>
+    </div>`;
+    document.getElementById('list1d-info').style.display='block';
+  } else {
+    alert(`인덱스 범위 오류: 리스트 길이는 ${list1dData.length}입니다.`);
+  }
+}
+function clearHighlight1D(){
+  document.querySelectorAll('.cell').forEach(c=>c.classList.remove('hl-cell'));
+  document.getElementById('list1d-info').style.display='none';
+}
+function loadList1DPreset(type){
+  const presets={
+    int:{name:'scores',val:'85, 92, 78, 95, 88, 73, 100'},
+    str:{name:'fruits',val:'사과, 바나나, 딸기, 포도, 수박'},
+    mixed:{name:'data',val:'홍길동, 17, 172.5, True, A'}
+  };
+  const p=presets[type];
+  document.getElementById('l1-name').value=p.name;
+  document.getElementById('l1-values').value=p.val;
+  renderList1D();
+}
+
+/* ══════════════════
+   2차원 리스트 탭
+══════════════════ */
+let grid2dData=[];
+function initGrid(){
+  if(document.getElementById('grid2d-inputs').children.length===0) resizeGrid();
+}
+function resizeGrid(){
+  const rows=Math.min(6,Math.max(1,parseInt(document.getElementById('l2-rows').value)||3));
+  const cols=Math.min(7,Math.max(1,parseInt(document.getElementById('l2-cols').value)||4));
+  const wrap=document.getElementById('grid2d-inputs');
+  wrap.style.gridTemplateColumns=`repeat(${cols}, 62px)`;
+  wrap.innerHTML='';
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const inp=document.createElement('input');
+      inp.type='text';
+      inp.id=`g-${r}-${c}`;
+      inp.value='0';
+      inp.maxLength=6;
+      inp.placeholder=`[${r}][${c}]`;
+      wrap.appendChild(inp);
+    }
+  }
+}
+function renderGrid2D(){
+  const rows=parseInt(document.getElementById('l2-rows').value)||3;
+  const cols=parseInt(document.getElementById('l2-cols').value)||4;
+  grid2dData=[];
+  for(let r=0;r<rows;r++){
+    const row=[];
+    for(let c=0;c<cols;c++){
+      const el=document.getElementById(`g-${r}-${c}`);
+      row.push(el?el.value:'0');
+    }
+    grid2dData.push(row);
+  }
+
+  const stage=document.getElementById('list2d-stage');
+  stage.innerHTML='';
+
+  const tableWrap=document.createElement('div');
+  tableWrap.className='list2d-table-wrap';
+
+  // 행 레이블
+  const rowLabelCol=document.createElement('div');
+  rowLabelCol.className='row-label-col';
+  grid2dData.forEach((_,r)=>{
+    const lbl=document.createElement('div');
+    lbl.className='row-label';
+    lbl.textContent=`행 ${r} →`;
+    rowLabelCol.appendChild(lbl);
+  });
+
+  // 그리드
+  const gridWrap=document.createElement('div');
+
+  // 열 헤더
+  const colHdr=document.createElement('div');
+  colHdr.className='col-headers';
+  for(let c=0;c<cols;c++){
+    const h=document.createElement('div');
+    h.className='col-header';
+    h.textContent=`열 ${c}`;
+    colHdr.appendChild(h);
+  }
+  gridWrap.appendChild(colHdr);
+
+  // 행들
+  const gridRows=document.createElement('div');
+  gridRows.className='grid-rows';
+  gridRows.id='grid-rows';
+
+  grid2dData.forEach((row,r)=>{
+    const rowEl=document.createElement('div');
+    rowEl.className='grid-row';
+    row.forEach((val,c)=>{
+      const cell=document.createElement('div');
+      cell.className='gcell';
+      cell.id=`gcell-${r}-${c}`;
+      cell.title=`[${r}][${c}] = ${val}`;
+      cell.textContent=val.length>5?val.slice(0,4)+'…':val;
+      cell.onclick=()=>showCellInfo(r,c,val);
+      rowEl.appendChild(cell);
+    });
+    gridRows.appendChild(rowEl);
+  });
+  gridWrap.appendChild(gridRows);
+  tableWrap.appendChild(rowLabelCol);
+  tableWrap.appendChild(gridWrap);
+  stage.appendChild(tableWrap);
+
+  // 코드 미리보기
+  updateCodePreview(grid2dData);
+}
+
+function showCellInfo(r,c,val){
+  clearHighlight2D();
+  document.getElementById(`gcell-${r}-${c}`).classList.add('hl-gcell');
+  const name='matrix';
+  const pre=document.getElementById('l2-code-content');
+  if(pre) pre.innerHTML=`<span class="cmt"># 강조된 셀 접근</span>\nmatrix[<span class="num">${r}</span>][<span class="num">${c}</span>]  <span class="cmt"># = ${val}</span>`;
+  document.getElementById('l2-code-preview').style.display='block';
+}
+
+function highlightCell2D(){
+  const r=parseInt(document.getElementById('l2-hl-r').value);
+  const c=parseInt(document.getElementById('l2-hl-c').value);
+  clearHighlight2D();
+  const cell=document.getElementById(`gcell-${r}-${c}`);
+  if(cell){
+    cell.classList.add('hl-gcell');
+    const val=grid2dData[r]&&grid2dData[r][c];
+    document.getElementById('l2-code-preview').style.display='block';
+    document.getElementById('l2-code-content').innerHTML=
+      `<span class="cmt"># 선택한 셀</span>\nmatrix[<span class="num">${r}</span>][<span class="num">${c}</span>]  <span class="cmt"># = ${val}</span>`;
+  } else alert('해당 인덱스가 없습니다.');
+}
+function highlightRow2D(){
+  const r=parseInt(document.getElementById('l2-hl-r').value);
+  clearHighlight2D();
+  for(let c=0;c<(grid2dData[0]||[]).length;c++){
+    const cell=document.getElementById(`gcell-${r}-${c}`);
+    if(cell) cell.classList.add('hl-gcell-row');
+  }
+  const rowData=grid2dData[r];
+  if(rowData){
+    document.getElementById('l2-code-preview').style.display='block';
+    document.getElementById('l2-code-content').innerHTML=
+      `<span class="cmt"># ${r}행 전체</span>\nmatrix[<span class="num">${r}</span>]  <span class="cmt"># = [${rowData.join(', ')}]</span>`;
+  }
+}
+function highlightCol2D(){
+  const c=parseInt(document.getElementById('l2-hl-c').value);
+  clearHighlight2D();
+  for(let r=0;r<grid2dData.length;r++){
+    const cell=document.getElementById(`gcell-${r}-${c}`);
+    if(cell) cell.classList.add('hl-gcell-col');
+  }
+  const colData=grid2dData.map(row=>row[c]);
+  document.getElementById('l2-code-preview').style.display='block';
+  document.getElementById('l2-code-content').innerHTML=
+    `<span class="cmt"># ${c}열 전체 (반복문 사용)</span>\n[row[<span class="num">${c}</span>] <span class="kw">for</span> row <span class="kw">in</span> matrix]  <span class="cmt"># = [${colData.join(', ')}]</span>`;
+}
+function clearHighlight2D(){
+  document.querySelectorAll('.gcell').forEach(c=>{
+    c.classList.remove('hl-gcell','hl-gcell-row','hl-gcell-col');
+  });
+}
+
+function updateCodePreview(data){
+  const rows=data.map(r=>`    [${r.map(v=>`"${v}"`).join(', ')}]`).join(',\n');
+  const pre=document.getElementById('l2-code-content');
+  if(pre){
+    pre.innerHTML=`<span class="kw">matrix</span> <span class="op">=</span> [\n${rows}\n]`;
+  }
+  document.getElementById('l2-code-preview').style.display='block';
+}
+
+function loadGrid2DPreset(type){
+  const presets={
+    score:{
+      rows:3,cols:4,
+      data:[['국어','수학','영어','과학'],['85','92','78','95'],['90','88','76','82']]
+    },
+    map:{
+      rows:4,cols:5,
+      data:[['🌊','🌊','🏖','🏖','🌲'],['🌊','🏖','🏖','🌲','🌲'],['🏖','🏖','🌲','🏔','🏔'],['🏖','🌲','🌲','🏔','🏔']]
+    },
+    chess:{
+      rows:4,cols:4,
+      data:[['♜','♞','♝','♛'],['♟','♟','♟','♟'],['♙','♙','♙','♙'],['♖','♘','♗','♕']]
+    }
+  };
+  const p=presets[type];
+  document.getElementById('l2-rows').value=p.rows;
+  document.getElementById('l2-cols').value=p.cols;
+  resizeGrid();
+  setTimeout(()=>{
+    p.data.forEach((row,r)=>{
+      row.forEach((val,c)=>{
+        const el=document.getElementById(`g-${r}-${c}`);
+        if(el) el.value=val;
+      });
+    });
+    renderGrid2D();
+  },50);
+}
+
+/* ══════════════════
+   함수 탭
+══════════════════ */
+const FUNC_DEFS={
+  add:{
+    label:'add(a, b)',fname:'add',desc:'두 수를 더하는 함수',
+    params:[{n:'a',v:3,t:'number'},{n:'b',v:4,t:'number'}],
+    fn:(p)=>Number(p.a)+Number(p.b),
+    retType:(r)=>Number.isInteger(r)?'int':'float',
+    defLine:'def add(a, b):',bodyLine:'    return a + b',
+    fullCode:`def add(a, b):\n    return a + b\n\nprint(add(3, 4))   # 7\nprint(add(10, -2)) # 8`
+  },
+  multiply:{
+    label:'multiply(a, b)',fname:'multiply',desc:'두 수를 곱하는 함수',
+    params:[{n:'a',v:6,t:'number'},{n:'b',v:7,t:'number'}],
+    fn:(p)=>Number(p.a)*Number(p.b),
+    retType:(r)=>Number.isInteger(r)?'int':'float',
+    defLine:'def multiply(a, b):',bodyLine:'    return a * b',
+    fullCode:`def multiply(a, b):\n    return a * b\n\nprint(multiply(6, 7))  # 42\nprint(multiply(3, -4)) # -12`
+  },
+  power:{
+    label:'power(base, exp)',fname:'power',desc:'거듭제곱을 계산하는 함수',
+    params:[{n:'base',v:2,t:'number'},{n:'exp',v:8,t:'number'}],
+    fn:(p)=>Math.pow(Number(p.base),Number(p.exp)),
+    retType:(r)=>Number.isInteger(r)?'int':'float',
+    defLine:'def power(base, exp):',bodyLine:'    return base ** exp',
+    fullCode:`def power(base, exp):\n    return base ** exp\n\nprint(power(2, 8))  # 256\nprint(power(3, 3))  # 27`
+  },
+  is_even:{
+    label:'is_even(n)',fname:'is_even',desc:'숫자가 짝수인지 판별하는 함수 (True/False 반환)',
+    params:[{n:'n',v:7,t:'number'}],
+    fn:(p)=>Number(p.n)%2===0?'True':'False',
+    retType:()=>'bool',
+    defLine:'def is_even(n):',bodyLine:'    return n % 2 == 0',
+    fullCode:`def is_even(n):\n    return n % 2 == 0\n\nprint(is_even(4))  # True\nprint(is_even(7))  # False`
+  },
+  greet:{
+    label:'greet(name, age)',fname:'greet',desc:'인사말 문자열을 만드는 함수',
+    params:[{n:'name',v:'민수',t:'text'},{n:'age',v:17,t:'number'}],
+    fn:(p)=>`"안녕하세요, ${p.name}! ${p.age}살이군요!"`,
+    retType:()=>'str',
+    defLine:'def greet(name, age):',bodyLine:'    return f"안녕하세요, {name}! {age}살이군요!"',
+    fullCode:`def greet(name, age):\n    return f"안녕하세요, {name}! {age}살이군요!"\n\nprint(greet("민수", 17))\nprint(greet("지영", 19))`
+  },
+  max3:{
+    label:'max3(a, b, c)',fname:'max3',desc:'세 수 중 가장 큰 값을 찾는 함수',
+    params:[{n:'a',v:3,t:'number'},{n:'b',v:9,t:'number'},{n:'c',v:5,t:'number'}],
+    fn:(p)=>Math.max(Number(p.a),Number(p.b),Number(p.c)),
+    retType:(r)=>Number.isInteger(r)?'int':'float',
+    defLine:'def max3(a, b, c):',bodyLine:'    return max(a, b, c)',
+    fullCode:`def max3(a, b, c):\n    return max(a, b, c)\n\nprint(max3(3, 9, 5))   # 9\nprint(max3(1, 1, 1))   # 1`
+  },
+  calc_bmi:{
+    label:'calc_bmi(kg, m)',fname:'calc_bmi',desc:'체중(kg)과 키(m)로 BMI 지수를 계산하는 함수',
+    params:[{n:'kg',v:60,t:'number'},{n:'m',v:1.70,t:'number'}],
+    fn:(p)=>parseFloat((Number(p.kg)/(Number(p.m)**2)).toFixed(2)),
+    retType:()=>'float',
+    defLine:'def calc_bmi(kg, m):',bodyLine:'    return round(kg / m**2, 2)',
+    fullCode:`def calc_bmi(kg, m):\n    return round(kg / m**2, 2)\n\nprint(calc_bmi(60, 1.70))  # 20.76\nprint(calc_bmi(80, 1.80))  # 24.69`
+  },
+};
+
+let currentFuncKey='add';
+
+function initFuncTab(){
+  const row=document.getElementById('fn-preset-row');
+  if(row.children.length) return;
+  Object.keys(FUNC_DEFS).forEach(k=>{
+    const b=document.createElement('button');
+    b.className='fn-chip'+(k==='add'?' active':'');
+    b.textContent=FUNC_DEFS[k].label;
+    b.onclick=()=>selectFunc(k);
+    row.appendChild(b);
+  });
+  selectFunc('add');
+}
+
+function selectFunc(key){
+  currentFuncKey=key;
+  document.querySelectorAll('.fn-chip').forEach((b,i)=>{
+    b.classList.toggle('active',Object.keys(FUNC_DEFS)[i]===key);
+  });
+  const def=FUNC_DEFS[key];
+  document.getElementById('fn-desc-text').textContent='💡 '+def.desc;
+  document.getElementById('fn-def-line').textContent=def.defLine;
+  document.getElementById('fn-body-line').textContent=def.bodyLine;
+  document.getElementById('fn-code-filename').textContent=def.fname+'.py';
+
+  // 파라미터 인풋 생성
+  const wrap=document.getElementById('fn-param-inputs');
+  wrap.innerHTML='';
+  def.params.forEach(p=>{
+    const row=document.createElement('div');
+    row.className='fn-param-row';
+    row.innerHTML=`<span class="fn-param-label">${p.n} :</span>
+      <input class="fn-param-input" id="fnp-${p.n}" type="${p.t}" value="${p.v}"
+        ${p.t==='number'?'step="any"':''} oninput="computeAndShow()"/>`;
+    wrap.appendChild(row);
+  });
+  computeAndShow();
+}
+
+function computeAndShow(){
+  const def=FUNC_DEFS[currentFuncKey];
+  const params={};
+  def.params.forEach(p=>{
+    const el=document.getElementById('fnp-'+p.n);
+    params[p.n]=p.t==='number'?parseFloat(el.value)||0:el.value;
+  });
+  let result;
+  try{ result=def.fn(params); } catch(e){ result='오류'; }
+  const retTypeStr=def.retType(result);
+
+  const valEl=document.getElementById('fn-output-val');
+  const typeEl=document.getElementById('fn-output-type');
+  valEl.textContent=String(result);
+  typeEl.textContent=retTypeStr;
+  valEl.classList.remove('fn-flash');
+  void valEl.offsetWidth; // reflow
+  valEl.classList.add('fn-flash');
+
+  // 화살표 애니
+  ['fn-arrow-l','fn-arrow-r'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.classList.add('fn-arrow-active');
+    setTimeout(()=>el.classList.remove('fn-arrow-active'),350);
+  });
+
+  // 기어 회전
+  const gear=document.getElementById('fn-gear');
+  const panel=document.getElementById('fn-body-panel');
+  panel.classList.add('fn-computing');
+  setTimeout(()=>panel.classList.remove('fn-computing'),500);
+
+  // 코드 업데이트
+  const codeLines=def.fullCode.split('\n');
+  document.getElementById('fn-code-body').innerHTML=codeLines.map(line=>{
+    return line
+      .replace(/\bdef\b/g,'<span class="kw">def</span>')
+      .replace(/\breturn\b/g,'<span class="kw">return</span>')
+      .replace(/\bprint\b/g,'<span class="fn">print</span>')
+      .replace(/\bf"([^"]*)"/g,'<span class="str">f"$1"</span>')
+      .replace(/"([^"]*)"/g,'<span class="str">"$1"</span>')
+      .replace(/#(.*)$/g,'<span class="cmt">#$1</span>')
+      .replace(/\b(\d+\.?\d*)\b/g,'<span class="num">$1</span>');
+  }).join('\n');
+}
+
+/* ══════════════════
+   클래스 탭
+══════════════════ */
+const CLASS_DEFS={
+  student:{
+    className:'Student',
+    classVarKey:'school',classVarLabel:'school',classVarDefault:'파이썬고등학교',
+    instVars:[{k:'name',label:'이름',default:'홍길동',t:'text'},{k:'age',label:'나이',default:17,t:'number'},{k:'score',label:'점수',default:85,t:'number'}],
+    methods:{
+      'greet()':(attrs,cv)=>`"안녕하세요! 저는 ${cv}의 ${attrs.name}입니다."`,
+      'get_grade()':(attrs)=>{const s=Number(attrs.score);return s>=90?'"A"':s>=80?'"B"':s>=70?'"C"':'"D"';},
+      'study(3)':(attrs)=>`점수 ${attrs.score} → ${Number(attrs.score)+6} (+6점)`,
+    },
+    fish:'🎓',
+    presets:[{name:'김민준',age:16,score:78},{name:'이서연',age:17,score:92},{name:'박지훈',age:16,score:85}],
+    code:(cv)=>`class Student:\n    school = "${cv}"  # 클래스 변수\n\n    def __init__(self, name, age, score):\n        self.name = name   # 인스턴스 변수\n        self.age = age\n        self.score = score\n\n    def greet(self):\n        return f"안녕하세요! 저는 {self.school}의 {self.name}입니다."\n\n    def get_grade(self):\n        if self.score >= 90: return "A"\n        elif self.score >= 80: return "B"\n        elif self.score >= 70: return "C"\n        else: return "D"`,
+  },
+  animal:{
+    className:'Animal',
+    classVarKey:'planet',classVarLabel:'planet',classVarDefault:'지구',
+    instVars:[{k:'name',label:'이름',default:'코코',t:'text'},{k:'species',label:'종류',default:'강아지',t:'text'},{k:'sound',label:'소리',default:'멍멍',t:'text'}],
+    methods:{
+      'speak()':(attrs)=>`"${attrs.name}: ${attrs.sound}!"`,
+      'info()':(attrs,cv)=>`"${cv}에 사는 ${attrs.species} ${attrs.name}"`,
+    },
+    fish:'🐾',
+    presets:[{name:'코코',species:'강아지',sound:'멍멍'},{name:'나비',species:'고양이',sound:'야옹'},{name:'앵무',species:'앵무새',sound:'안녕'}],
+    code:(cv)=>`class Animal:\n    planet = "${cv}"  # 클래스 변수\n\n    def __init__(self, name, species, sound):\n        self.name = name\n        self.species = species\n        self.sound = sound\n\n    def speak(self):\n        return f"{self.name}: {self.sound}!"\n\n    def info(self):\n        return f"{self.planet}에 사는 {self.species} {self.name}"`,
+  },
+  rect:{
+    className:'Rectangle',
+    classVarKey:'unit',classVarLabel:'unit',classVarDefault:'cm',
+    instVars:[{k:'width',label:'가로',default:5,t:'number'},{k:'height',label:'세로',default:3,t:'number'}],
+    methods:{
+      'area()':(attrs,cv)=>`${Number(attrs.width)*Number(attrs.height)} ${cv}²`,
+      'perimeter()':(attrs,cv)=>`${2*(Number(attrs.width)+Number(attrs.height))} ${cv}`,
+    },
+    fish:'📐',
+    presets:[{width:4,height:3},{width:10,height:5},{width:7,height:7}],
+    code:(cv)=>`class Rectangle:\n    unit = "${cv}"  # 클래스 변수\n\n    def __init__(self, width, height):\n        self.width = width\n        self.height = height\n\n    def area(self):\n        return self.width * self.height\n\n    def perimeter(self):\n        return 2 * (self.width + self.height)`,
+  },
+};
+
+let currentClassKey='student';
+let classInstances=[];
+
+function loadClassPreset(key){
+  currentClassKey=key;
+  document.querySelectorAll('.cls-chip').forEach((b,i)=>{
+    b.classList.toggle('active',['student','animal','rect'][i]===key);
+  });
+  const def=CLASS_DEFS[key];
+  document.getElementById('cls-classvar-val').value=def.classVarDefault;
+  classInstances=[];
+  renderClassMold();
+  renderInstances();
+}
+
+function renderClassMold(){
+  const key=currentClassKey;
+  const def=CLASS_DEFS[key];
+  const cv=document.getElementById('cls-classvar-val').value||def.classVarDefault;
+
+  document.getElementById('cls-mold-classname').textContent='class '+def.className+':';
+
+  // 클래스 변수
+  document.getElementById('cls-class-vars-display').innerHTML=
+    `<div class="cls-var-item">
+      <span class="cls-var-name">${def.classVarLabel}</span>
+      <span class="cls-var-eq"> = </span>
+      <span class="cls-var-val">"${cv}"</span>
+      <span class="cls-shared-tag">공유</span>
+    </div>`;
+
+  // 인스턴스 변수 슬롯
+  document.getElementById('cls-inst-slots-display').innerHTML=
+    def.instVars.map(v=>`<div class="cls-inst-slot">
+      <span class="cls-inst-slot-name">self.${v.k}</span>
+      <span class="cls-inst-slot-q"> = ?</span>
+    </div>`).join('');
+
+  // 메서드
+  document.getElementById('cls-methods-display').innerHTML=
+    Object.keys(def.methods).map(m=>`<span class="cls-method-tag">def ${m.replace('()','(self)')}</span>`).join('');
+
+  // 인스턴스 생성 폼
+  document.getElementById('cls-create-title').textContent=
+    `🐟 새 붕어빵 굽기 — new ${def.className}(…)`;
+  const form=document.getElementById('cls-inst-form');
+  form.innerHTML='';
+  def.instVars.forEach(v=>{
+    const wrap=document.createElement('div');
+    wrap.style.cssText='display:flex;flex-direction:column;gap:4px;';
+    wrap.innerHTML=`<label style="font-size:11px;color:var(--muted);font-weight:700">${v.label} (${v.k})</label>
+      <input type="${v.t}" id="cls-inp-${v.k}" value="${v.default}" style="width:110px"
+        ${v.t==='number'?'step="any"':''}/>`;
+    form.appendChild(wrap);
+  });
+
+  // 코드 미리보기
+  updateClassCode(cv);
+}
+
+function updateClassCode(cv){
+  const def=CLASS_DEFS[currentClassKey];
+  if(!cv) cv=document.getElementById('cls-classvar-val').value;
+  const raw=def.code(cv);
+  document.getElementById('cls-code-filename').textContent=def.className.toLowerCase()+'.py';
+  document.getElementById('cls-code-body').innerHTML=raw
+    .replace(/\bclass\b/g,'<span class="kw">class</span>')
+    .replace(/\bdef\b/g,'<span class="kw">def</span>')
+    .replace(/\breturn\b/g,'<span class="kw">return</span>')
+    .replace(/\bself\b/g,'<span style="color:#f87171">self</span>')
+    .replace(/\belif\b/g,'<span class="kw">elif</span>')
+    .replace(/\bif\b/g,'<span class="kw">if</span>')
+    .replace(/\belse\b/g,'<span class="kw">else</span>')
+    .replace(/"([^"]*)"/g,'<span class="str">"$1"</span>')
+    .replace(/#(.*)$/gm,'<span class="cmt">#$1</span>')
+    .replace(/\b(\d+)\b/g,'<span class="num">$1</span>');
+}
+
+function createInstance(){
+  const def=CLASS_DEFS[currentClassKey];
+  const cv=document.getElementById('cls-classvar-val').value||def.classVarDefault;
+  const attrs={};
+  def.instVars.forEach(v=>{
+    const el=document.getElementById('cls-inp-'+v.k);
+    attrs[v.k]=v.t==='number'?(parseFloat(el.value)||0):el.value;
+  });
+  classInstances.push({attrs,cv,key:currentClassKey});
+  renderInstances();
+}
+
+function renderInstances(){
+  const grid=document.getElementById('cls-instances-grid');
+  const empty=document.getElementById('cls-empty');
+  if(classInstances.length===0){
+    grid.innerHTML='';
+    grid.appendChild(empty||createEmptyEl());
+    empty&&(empty.style.display='block');
+    return;
+  }
+  if(empty) empty.style.display='none';
+  grid.innerHTML='';
+  classInstances.forEach((inst,idx)=>{
+    const def=CLASS_DEFS[inst.key];
+    const card=document.createElement('div');
+    card.className='inst-card';
+    const attrsHtml=def.instVars.map(v=>
+      `<div class="inst-attr-row"><span class="inst-attr-k">${v.k}</span><span class="inst-attr-v">${inst.attrs[v.k]}</span></div>`
+    ).join('');
+    const methodBtns=Object.keys(def.methods).map(m=>
+      `<button class="inst-method-btn" onclick="callMethod(${idx},'${m}')">${m}</button>`
+    ).join('');
+    card.innerHTML=`
+      <div class="inst-num">#${idx+1}</div>
+      <div class="inst-fish">${def.fish}</div>
+      ${attrsHtml}
+      <div class="inst-class-badge">${def.classVarLabel} = "${inst.cv}"</div>
+      <div class="inst-methods">${methodBtns}</div>
+      <div class="inst-method-result" id="inst-result-${idx}"></div>
+    `;
+    card.querySelector('.inst-fish').title=`${def.className} 인스턴스 #${idx+1}`;
+    grid.appendChild(card);
+  });
+}
+
+function callMethod(instIdx,methodKey){
+  const inst=classInstances[instIdx];
+  const def=CLASS_DEFS[inst.key];
+  const resultEl=document.getElementById('inst-result-'+instIdx);
+  const fn=def.methods[methodKey];
+  const result=fn?fn(inst.attrs,inst.cv):'?';
+  resultEl.textContent=methodKey+' → '+result;
+  resultEl.style.animation='none';
+  void resultEl.offsetWidth;
+  resultEl.style.animation='fnFlash .35s ease';
+}
+
+function clearInstances(){classInstances=[];renderInstances();}
+
+function loadInstancePresets(){
+  const def=CLASS_DEFS[currentClassKey];
+  const cv=document.getElementById('cls-classvar-val').value||def.classVarDefault;
+  classInstances=def.presets.map(attrs=>({attrs,cv,key:currentClassKey}));
+  renderInstances();
+}
+
+// 탭 전환 시 초기화
+const _origSwitchTab=switchTab;
+
+/* ── 엔터키 ── */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    const active=document.querySelector('.tab-panel.active').id;
+    if(active==='tab-var') addVariable();
+    else if(active==='tab-list1d') renderList1D();
+    else if(active==='tab-list2d') renderGrid2D();
+    else if(active==='tab-cls') createInstance();
+  }
+});
+</script>
+</body>
+</html>
