@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>파이썬 개념 탐험기 — 변수·리스트·함수·클래스</title>
+<title>파이썬 개념 탐험기</title>
 <meta name="description" content="변수·리스트·반복·함수·클래스를 직접 조작하며 배우는 무료 파이썬 시각화 학습 도구. 코드가 눈앞에서 상자·격자·기계로 그려집니다."/>
 <meta name="theme-color" content="#2E6CA8"/>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E"/>
@@ -864,7 +864,7 @@ html[data-input="keyboard"] *,html[data-input="keyboard"] *::before,html[data-in
   </div>
 
   <div class="tip">
-    <strong>핵심 개념</strong> — 변수를 만드는 것 = 이름표가 붙은 상자를 메모리(기억 공간)에 놓는 것. 값을 바꾸면 상자 안의 내용물만 교체됩니다.
+    <strong>핵심 개념</strong>: 변수를 만드는 것 = 이름표가 붙은 상자를 메모리(기억 공간)에 놓는 것. 값을 바꾸면 상자 안의 내용물만 교체됩니다.
   </div>
 
   <div class="code-block">
@@ -884,12 +884,12 @@ score <span class="op">=</span> <span class="num">100</span>
   </div>
 
   <div class="predict">
-    <div class="predict-q">출력 예상해 보기 — 아래 코드의 결과는?</div>
+    <div class="predict-q">이 코드를 실행하면 무엇이 출력될까요?</div>
     <div class="predict-code">x = 5
 x = 9
 print(x)</div>
     <button class="predict-btn" type="button" onclick="revealPredict(this)">정답 보기</button>
-    <div class="predict-out" hidden>출력: <span class="po-val">9</span> &nbsp;— 마지막 대입값만 남아요</div>
+    <div class="predict-out" hidden>출력: <span class="po-val">9</span><br>마지막 대입값만 남아요</div>
   </div>
 
   <div class="quiz" data-quiz="var"></div>
@@ -902,7 +902,7 @@ print(x)</div>
 ══════════════════════════════════ -->
 <div class="tab-panel" id="tab-list1d">
   <div class="section-intro">
-    <h2>1차원 리스트 — 나란히 놓인 상자들</h2>
+    <h2>리스트에 여러 값 담기</h2>
     <p>리스트는 여러 값을 하나의 이름으로 묶어서 관리하는 자료구조입니다.<br>
     각 상자에는 <strong>인덱스(index)</strong>라는 번호가 붙어 있고, 0번부터 시작합니다.</p>
     <details class="chapter-goals"><summary>학습 목표 확인하기</summary><ul><li>리스트 만들기 (값 여러 개를 한 이름에)</li><li>인덱스로 값 꺼내기 (0부터 · 음수 인덱스)</li><li>len( )과 인덱스 범위 오류</li></ul></details>
@@ -941,7 +941,7 @@ print(x)</div>
   </div>
 
   <div class="tip">
-    <strong>인덱스는 0부터!</strong> — 리스트의 첫 번째 원소의 인덱스는 <strong>0</strong>입니다. 원소가 5개라면 인덱스는 0, 1, 2, 3, 4까지예요. <br>
+    <strong>인덱스는 0부터!</strong>: 리스트의 첫 번째 원소의 인덱스는 <strong>0</strong>입니다. 원소가 5개라면 인덱스는 0, 1, 2, 3, 4까지예요. <br>
     음수 인덱스 <code>-1</code>은 마지막 원소, <code>-2</code>는 뒤에서 두 번째를 가리킵니다.
   </div>
 
@@ -970,11 +970,11 @@ scores<span class="op">.</span><span class="fn">pop</span>()         <span class
   </div>
 
   <div class="predict">
-    <div class="predict-q">출력 예상해 보기 — 아래 코드의 결과는?</div>
+    <div class="predict-q">이 코드를 실행하면 무엇이 출력될까요?</div>
     <div class="predict-code">nums = [10, 20, 30]
 print(nums[-1])</div>
     <button class="predict-btn" type="button" onclick="revealPredict(this)">정답 보기</button>
-    <div class="predict-out" hidden>출력: <span class="po-val">30</span> &nbsp;— -1은 뒤에서 첫 번째(마지막) 칸</div>
+    <div class="predict-out" hidden>출력: <span class="po-val">30</span><br>-1은 뒤에서 첫 번째(마지막) 칸</div>
   </div>
 
   <div class="quiz" data-quiz="list1d"></div>
@@ -987,9 +987,9 @@ print(nums[-1])</div>
 ══════════════════════════════════ -->
 <div class="tab-panel" id="tab-loop">
   <div class="section-intro">
-    <h2>반복·조건 — 똑같은 일을 자동으로, 상황 따라 다르게</h2>
+    <h2>점수를 하나씩 확인하고 합격 판정하기</h2>
     <p>성적 5개를 합격/불합격으로 나눈다면 <strong>if</strong>를 5번 써야 할까요?<br>
-    <strong>반복문(for)</strong>이 리스트를 한 칸씩 훑고, <strong>조건문(if)</strong>이 매 칸마다 갈림길을 정합니다 — for 한 줄이면 5개든 <strong>100개든</strong> 똑같이 끝납니다.</p>
+    <strong>반복문(for)</strong>이 리스트를 한 칸씩 훑고, <strong>조건문(if)</strong>이 매 칸마다 갈림길을 정합니다. for 한 줄이면 5개든 <strong>100개든</strong> 똑같이 끝납니다.</p>
     <details class="chapter-goals"><summary>학습 목표 확인하기</summary><ul><li>for 반복 (리스트·range 훑기)</li><li>range의 범위 (0부터 끝-1까지)</li><li>if 조건 분기 (합격/불합격 갈림길)</li></ul></details>
   </div>
 
@@ -1021,8 +1021,8 @@ print(nums[-1])</div>
   </div>
 
   <div class="tip">
-    <strong>for는 반복, if는 갈림길.</strong> — <code>for score in scores:</code>는 리스트의 값을 <strong>하나씩</strong> 꺼내 같은 일을 반복합니다. 그 안의 <code>if score &gt;= 60:</code>은 값에 따라 <strong>다른 길</strong>로 보냅니다.<br>
-    <code>range(5)</code>는 <code>0, 1, 2, 3, 4</code> 다섯 개의 숫자를 만들어 줍니다 — "5번 반복"할 때 써요.
+    <strong>for는 반복, if는 갈림길.</strong>: <code>for score in scores:</code>는 리스트의 값을 <strong>하나씩</strong> 꺼내 같은 일을 반복합니다. 그 안의 <code>if score &gt;= 60:</code>은 값에 따라 <strong>다른 길</strong>로 보냅니다.<br>
+    <code>range(5)</code>는 <code>0, 1, 2, 3, 4</code> 다섯 개의 숫자를 만들어 줍니다. 다섯 번 반복할 때 써요.
   </div>
 
   <div class="code-block">
@@ -1049,11 +1049,11 @@ pass_count <span class="op">=</span> <span class="num">0</span>
   </div>
 
   <div class="predict">
-    <div class="predict-q">출력 예상해 보기 — 아래 코드의 결과는?</div>
+    <div class="predict-q">이 코드를 실행하면 무엇이 출력될까요?</div>
     <div class="predict-code">for i in range(3):
     print(i, end=" ")</div>
     <button class="predict-btn" type="button" onclick="revealPredict(this)">정답 보기</button>
-    <div class="predict-out" hidden>출력: <span class="po-val">0 1 2</span> &nbsp;— range(3)은 0·1·2, 끝의 3은 빠짐</div>
+    <div class="predict-out" hidden>출력: <span class="po-val">0 1 2</span><br>range(3)은 0·1·2, 끝의 3은 빠짐</div>
   </div>
 
   <div class="quiz" data-quiz="loop"></div>
@@ -1066,10 +1066,10 @@ pass_count <span class="op">=</span> <span class="num">0</span>
 ══════════════════════════════════ -->
 <div class="tab-panel" id="tab-list2d">
   <div class="section-intro">
-    <h2>2차원 리스트 — 격자(표) 형태</h2>
+    <h2>2차원 리스트에서 행과 열로 값 찾기</h2>
     <p>2차원 리스트는 <strong>리스트 안에 리스트</strong>를 넣은 구조입니다.<br>
     행(row)과 열(column) 두 개의 인덱스로 원소를 찾아요. 마치 엑셀 표처럼요!<br>
-    <span style="color:var(--box-loop);font-weight:600">🔁 표를 훑을 땐 <code>for</code> 안에 <code>for</code>를 씁니다 — 반복은 앞의 반복·조건 챕터에서 배웠죠?</span></p>
+    <span style="color:var(--box-loop);font-weight:600">🔁 표를 훑을 땐 <code>for</code> 안에 <code>for</code>를 씁니다. 앞에서 배운 반복문을 떠올려 보세요.</span></p>
     <details class="chapter-goals"><summary>학습 목표 확인하기</summary><ul><li>행 × 열 격자 구조</li><li>[행][열] 두 인덱스로 접근</li><li>행 전체 접근 · len으로 행 개수</li></ul></details>
   </div>
 
@@ -1116,7 +1116,7 @@ pass_count <span class="op">=</span> <span class="num">0</span>
   </div>
 
   <div class="tip">
-    <strong>접근 방법: <code>리스트[행][열]</code></strong> — 먼저 몇 번째 행인지, 그다음 몇 번째 열인지 순서대로 씁니다. 예: <code>matrix[1][2]</code>는 2행(인덱스 1) 3열(인덱스 2)의 값이에요.
+    <strong>접근 방법: <code>리스트[행][열]</code></strong>: 먼저 몇 번째 행인지, 그다음 몇 번째 열인지 순서대로 씁니다. 예: <code>matrix[1][2]</code>는 2행(인덱스 1) 3열(인덱스 2)의 값이에요.
   </div>
 
   <div class="code-block">
@@ -1144,11 +1144,11 @@ matrix <span class="op">=</span> [
   </div>
 
   <div class="predict">
-    <div class="predict-q">출력 예상해 보기 — 아래 코드의 결과는?</div>
+    <div class="predict-q">이 코드를 실행하면 무엇이 출력될까요?</div>
     <div class="predict-code">m = [[1, 2], [3, 4]]
 print(m[1][0])</div>
     <button class="predict-btn" type="button" onclick="revealPredict(this)">정답 보기</button>
-    <div class="predict-out" hidden>출력: <span class="po-val">3</span> &nbsp;— [1]=두 번째 행 [3,4], 그 안의 [0]</div>
+    <div class="predict-out" hidden>출력: <span class="po-val">3</span><br>[1]=두 번째 행 [3,4], 그 안의 [0]</div>
   </div>
 
   <div class="quiz" data-quiz="list2d"></div>
@@ -1161,7 +1161,7 @@ print(m[1][0])</div>
 ══════════════════════════════════ -->
 <div class="tab-panel" id="tab-func">
   <div class="section-intro">
-    <h2>함수 — 입력을 넣으면 출력이 나오는 기계</h2>
+    <h2>함수에 값을 넣고 결과 확인하기</h2>
     <p>함수는 특정 작업을 수행하는 코드 묶음입니다. <strong>매개변수(parameter)</strong>를 입력으로 받아
     계산한 뒤 <strong>반환값(return value)</strong>을 내보내는 기계라고 생각하세요.<br>
     아래에서 함수를 골라 값을 바꿔 보면 출력이 실시간으로 바뀝니다!</p>
@@ -1184,8 +1184,8 @@ print(m[1][0])</div>
 
     <!-- 용어 배지 -->
     <div class="fn-term-badges">
-      <span class="fn-term arg">📥 <b>인자(argument)</b> — 호출할 때 넣는 값</span>
-      <span class="fn-term param">📦 <b>매개변수(parameter)</b> — 함수가 받는 변수</span>
+      <span class="fn-term arg">호출할 때 넣는 값이 <b>인자(argument)</b>입니다.</span>
+      <span class="fn-term param">함수가 값을 받는 변수가 <b>매개변수(parameter)</b>입니다.</span>
     </div>
 
     <div class="fn-machine-layout" id="fn-machine-layout">
@@ -1237,7 +1237,7 @@ print(m[1][0])</div>
   </div>
 
   <div class="tip">
-    <strong>함수의 핵심 3요소</strong> —
+    <strong>함수의 핵심 3요소</strong>:
     <strong style="color:var(--accent)">① 함수 이름</strong> (호출할 때 사용),
     <strong style="color:var(--blue)">② 매개변수</strong> (입력값을 받는 변수),
     <strong style="color:var(--green)">③ return</strong> (결과를 돌려주는 키워드).
@@ -1266,13 +1266,13 @@ result <span class="op">=</span> <span class="fn">add</span>(<span class="num">3
   </div>
 
   <div class="predict">
-    <div class="predict-q">출력 예상해 보기 — 아래 코드의 결과는?</div>
+    <div class="predict-q">이 코드를 실행하면 무엇이 출력될까요?</div>
     <div class="predict-code">def f(n):
     return n * n
 
 print(f(4))</div>
     <button class="predict-btn" type="button" onclick="revealPredict(this)">정답 보기</button>
-    <div class="predict-out" hidden>출력: <span class="po-val">16</span> &nbsp;— 4 × 4 = 16을 돌려줘요</div>
+    <div class="predict-out" hidden>출력: <span class="po-val">16</span><br>4 × 4 = 16을 돌려줘요</div>
   </div>
 
   <div class="quiz" data-quiz="func"></div>
@@ -1285,7 +1285,7 @@ print(f(4))</div>
 ══════════════════════════════════ -->
 <div class="tab-panel" id="tab-cls">
   <div class="section-intro">
-    <h2>클래스 — 붕어빵 틀과 붕어빵</h2>
+    <h2>클래스로 나만의 객체 만들기</h2>
     <p>클래스(class)는 <strong>붕어빵 틀</strong>, 인스턴스(instance)는 그 틀로 찍어낸 <strong>붕어빵</strong>이에요.<br>
     같은 틀(클래스)에서 나왔지만, 각 붕어빵(인스턴스)은 속 재료(속성값)가 다를 수 있습니다.<br>
     아래에서 클래스를 고르고, 붕어빵을 직접 만들어 보세요! 🐟</p>
@@ -1314,27 +1314,27 @@ print(f(4))</div>
     </div>
     <pre><code id="cls-code-body"></code></pre>
   </div>
-  <p class="code-to-viz">👇 위 코드가 아래 <strong>붕어빵 틀</strong>로 그려집니다 — 클래스 변수 · 인스턴스 변수 · 메서드</p>
+  <p class="code-to-viz">위 코드의 클래스 변수, 인스턴스 변수, 메서드를 <strong>붕어빵 틀</strong>에서 찾아보세요.</p>
 
   <!-- 붕어빵 틀 시각화 -->
   <div class="cls-mold" id="cls-mold">
     <div class="cls-mold-hdr">
       <span style="font-size:22px">🔨</span>
       <div>
-        <div class="cls-mold-badge">붕어빵 틀 — 클래스 정의</div>
+        <div class="cls-mold-badge">클래스 정의</div>
         <div class="cls-mold-name" id="cls-mold-classname">class Student:</div>
       </div>
     </div>
     <div class="cls-mold-section">
-      <div class="cls-section-hd shared">🔒 클래스 변수 — 모든 인스턴스가 공유하는 값</div>
+      <div class="cls-section-hd shared">모두 함께 쓰는 클래스 변수</div>
       <div id="cls-class-vars-display"></div>
     </div>
     <div class="cls-mold-section">
-      <div class="cls-section-hd own">📝 인스턴스 변수 — 인스턴스마다 다른 값 (빈 칸은 생성 시 채워짐)</div>
+      <div class="cls-section-hd own">객체마다 따로 갖는 인스턴스 변수</div>
       <div id="cls-inst-slots-display"></div>
     </div>
     <div class="cls-mold-section">
-      <div class="cls-section-hd method">⚙ 메서드 — 모든 인스턴스가 공유하는 기능</div>
+      <div class="cls-section-hd method">객체가 실행할 수 있는 메서드</div>
       <div id="cls-methods-display"></div>
     </div>
   </div>
@@ -1359,19 +1359,19 @@ print(f(4))</div>
   </div>
 
   <div class="tip">
-    <strong>클래스 변수 vs 인스턴스 변수</strong> —
+    <strong>클래스 변수 vs 인스턴스 변수</strong>:
     <strong style="color:var(--accent3)">클래스 변수</strong>는 클래스 이름 바로 아래에 선언하고 <em>모든 인스턴스가 공유</em>합니다.
     <strong style="color:var(--blue)">인스턴스 변수</strong>는 <code>self.변수명</code>으로 선언하고 <em>각 인스턴스마다 따로</em> 저장됩니다.
   </div>
 
   <div class="predict">
-    <div class="predict-q">출력 예상해 보기 — 아래 코드의 결과는?</div>
+    <div class="predict-q">이 코드를 실행하면 무엇이 출력될까요?</div>
     <div class="predict-code">class Dog:
     legs = 4        # 클래스 변수
 
 print(Dog().legs)</div>
     <button class="predict-btn" type="button" onclick="revealPredict(this)">정답 보기</button>
-    <div class="predict-out" hidden>출력: <span class="po-val">4</span> &nbsp;— 클래스 변수는 모든 인스턴스가 공유</div>
+    <div class="predict-out" hidden>출력: <span class="po-val">4</span><br>클래스 변수는 모든 인스턴스가 공유</div>
   </div>
 
   <div class="quiz" data-quiz="cls"></div>
@@ -1385,13 +1385,13 @@ print(Dog().legs)</div>
 <div class="tab-panel" id="tab-compare">
   <div class="section-intro">
     <h2>전체 개념 비교 정리</h2>
-    <p>변수, 리스트, 반복·조건, 함수, 클래스까지 — 배운 개념을 한 화면에서 비교해 봐요.</p>
+    <p>변수, 리스트, 반복·조건, 함수, 클래스를 한 화면에서 비교해 보세요.</p>
     <div class="chapter-goals"><div class="cg-title">이 챕터에서 되짚는 것</div><ul><li>차원의 위계 (점 → 선 → 면)</li><li>접근 방법 비교 (x · x[i] · x[i][j])</li><li>언제 무엇을 쓸지</li></ul></div>
   </div>
 
   <div class="memory-diagram">
     <div class="memory-col col-var">
-      <h4>📦 변수 — 하나의 상자</h4>
+      <h4>변수에 값 하나 저장하기</h4>
       <div class="mem-cap">메모리 한 칸 · <b>점(点)</b> 하나 느낌</div>
       <div class="dim-point">
         <div class="dim-cell"><span class="dv">95</span><span class="dl">score</span></div>
@@ -1399,7 +1399,7 @@ print(Dog().legs)</div>
       <div class="mem-foot">이름 하나 = 값 하나</div>
     </div>
     <div class="memory-col col-1d">
-      <h4>🔢 1차원 — 상자들의 줄</h4>
+      <h4>리스트에 값을 나란히 담기</h4>
       <div class="mem-cap">연속된 메모리 · <b>선(線)</b>처럼 한 줄</div>
       <div class="dim-line">
         <div class="dim-cell"><span class="dv">85</span><span class="dl">[0]</span></div>
@@ -1410,7 +1410,7 @@ print(Dog().legs)</div>
       <div class="mem-foot">이름 하나, 인덱스로 구분</div>
     </div>
     <div class="memory-col col-2d">
-      <h4>📊 2차원 — 행×열 격자</h4>
+      <h4>2차원 리스트에 표로 담기</h4>
       <div class="mem-cap">행 × 열 구조 · <b>면(面)</b>처럼 표. <code style="font-family:var(--font-code)">[[1,2,3],[4,5,6]]</code></div>
       <div class="dim-grid">
         <div class="dim-cell"><span class="dv">1</span><span class="dl">[0][0]</span></div>
@@ -1469,7 +1469,7 @@ print(Dog().legs)</div>
   </table>
 
   <div class="warn">
-    <strong>자주 하는 실수</strong> — 리스트 인덱스를 1부터 세는 실수! 파이썬은 무조건 <strong>0부터</strong> 시작합니다. 원소가 5개인 리스트는 인덱스 0 ~ 4, 5번 인덱스를 쓰면 오류가 납니다.
+    <strong>자주 하는 실수</strong>: 리스트 인덱스를 1부터 세는 실수! 파이썬은 무조건 <strong>0부터</strong> 시작합니다. 원소가 5개인 리스트는 인덱스 0 ~ 4, 5번 인덱스를 쓰면 오류가 납니다.
   </div>
 
   <div class="code-block">
@@ -1507,7 +1507,7 @@ seats <span class="op">=</span> [
 
   <div class="memory-diagram">
     <div class="memory-col">
-      <h4>⚙️ 함수 — 입력→처리→출력 기계</h4>
+      <h4>함수로 동작 묶기</h4>
       <div class="mem-box">
         <div class="mem-address">재사용 가능한 코드 묶음</div>
         <div class="mem-item"><span class="mem-key">입력</span><span class="mem-val">매개변수</span></div>
@@ -1517,7 +1517,7 @@ seats <span class="op">=</span> [
       <div style="margin-top:10px;font-size:12px;color:var(--muted)">한 번 정의 → 여러 번 호출</div>
     </div>
     <div class="memory-col">
-      <h4>🏗️ 클래스 — 붕어빵 틀(설계도)</h4>
+      <h4>클래스로 데이터와 동작 묶기</h4>
       <div class="mem-box">
         <div class="mem-address">속성 + 기능을 하나로</div>
         <div class="mem-item"><span class="mem-key">속성</span><span class="mem-val">변수(데이터)</span></div>
@@ -1529,7 +1529,7 @@ seats <span class="op">=</span> [
   </div>
 
   <div class="tip" style="margin-top:16px">
-    <strong>언제 무엇을?</strong> — 같은 작업을 반복하면 <strong>함수</strong>, 관련된 데이터와 기능을 한 덩어리로 묶고 싶으면 <strong>클래스</strong>를 씁니다.
+    <strong>언제 무엇을?</strong>: 같은 작업을 반복하면 <strong>함수</strong>, 관련된 데이터와 기능을 한 덩어리로 묶고 싶으면 <strong>클래스</strong>를 씁니다.
   </div>
 
   <div class="code-block">
@@ -1987,7 +1987,7 @@ function renderQuizSummary(ch){
     body='<div class="quiz-wrong-list"><div class="qwl-title">다시 볼 문제 '+st.wrong.length+'개</div>'+
       st.wrong.map(wi=>{const q=bank[wi];
         return '<div class="qwl-item"><div class="qwl-q">'+q.q+'</div>'+
-          '<div class="qwl-a">정답: <b>'+q.opts[q.answer]+'</b> — '+q.explain+'</div></div>';
+          '<div class="qwl-a">정답: <b>'+q.opts[q.answer]+'</b><br>'+q.explain+'</div></div>';
       }).join('')+'</div>';
   } else {
     body='<div class="quiz-perfect">전부 맞혔어요! 완벽합니다.</div>';
@@ -2594,11 +2594,11 @@ function playFuncFlow(){
   };
   const clear=()=>Object.values(region).forEach(r=>r&&r.classList.remove('fn-flow-active'));
   const steps=[
-    {k:'call',  t:'① 호출 — 함수 이름 뒤 괄호에 인자(argument)를 넣어 부릅니다.'},
-    {k:'params',t:'② 전달(바인딩) — 인자 값이 순서대로 매개변수(parameter)에 담깁니다.', pulse:true},
-    {k:'body',  t:'③ 실행 — 함수 본체가 값을 계산합니다.', gear:true},
-    {k:'out',   t:'④ 반환 — return 으로 결과값이 만들어집니다.'},
-    {k:'ret',   t:'⑤ 돌아감 — 반환값이 호출한 자리로 돌아가 결과가 됩니다.'},
+    {k:'call',  t:'① 함수 이름 뒤 괄호에 인자(argument)를 넣어 호출합니다.'},
+    {k:'params',t:'② 인자 값이 순서대로 매개변수(parameter)에 전달됩니다.', pulse:true},
+    {k:'body',  t:'③ 함수 본체가 실행되어 값을 계산합니다.', gear:true},
+    {k:'out',   t:'④ return으로 결과값을 반환합니다.'},
+    {k:'ret',   t:'⑤ 반환값이 호출한 자리로 돌아갑니다.'},
   ];
   btn.disabled=true;
   let i=0;
@@ -2712,7 +2712,7 @@ function renderClassMold(){
 
   // 인스턴스 생성 폼
   document.getElementById('cls-create-title').textContent=
-    `🐟 새 붕어빵 굽기 — ${def.className}(…) 호출`;
+    `${def.className}(…)을 호출해 객체 만들기`;
   const form=document.getElementById('cls-inst-form');
   form.innerHTML='';
   def.instVars.forEach(v=>{
