@@ -15,13 +15,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
+/* D2Coding by NAVER, SIL Open Font License; bundled for offline use. */
+@font-face{font-family:'D2Coding';src:url('assets/fonts/D2Coding-Regular.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap;}
+@font-face{font-family:'D2Coding';src:url('assets/fonts/D2Coding-Bold.woff2') format('woff2');font-style:normal;font-weight:600 900;font-display:swap;}
+
 :root{
   --bg:#FFFFFF;
   --surface:#FFFFFF;
   --surface2:#F3F5F7;
   --border:#DEE3E9;
+  --worksheet-border:#BAC5D2;
+  --font-code:"D2Coding","Cascadia Mono",Consolas,monospace;
   --accent:#2E6CA8;
   --accent2:#B7791F;
   --accent3:#A16207;
@@ -99,15 +104,15 @@ main{max-width:1064px;margin:0 auto;padding:32px 24px 72px;}
 .chapter-cta.done button{background:var(--green);}
 .chapter-cta.done button:hover{transform:none;}
 /* P9-1: 출력 예상해 보기 */
-.predict{background:var(--surface);border:0;border-top:1px solid var(--border);border-radius:0;padding:24px 0;margin:32px 0;}
+.predict{background:var(--surface);border:1px solid var(--worksheet-border);border-radius:10px;padding:24px;margin:32px 0;}
 .predict-q{font-size:13.5px;font-weight:700;color:var(--accent3);margin-bottom:10px;letter-spacing:.02em;}
-.predict-code{background:var(--ink);color:#D8E2F2;border-radius:10px;padding:12px 15px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:14px;line-height:1.7;white-space:pre;overflow-x:auto;}
+.predict-code{background:var(--ink);color:#D8E2F2;border-radius:10px;padding:12px 15px;font-family:var(--font-code);font-size:16px;line-height:1.85;white-space:pre;overflow-x:auto;}
 .predict-btn{margin-top:12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 16px;font-size:14px;font-weight:700;color:var(--accent);cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s;}
 .predict-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(46,108,168,.07);}
 .predict-btn:disabled{opacity:.6;cursor:default;}
 .predict-out{margin-top:12px;padding:10px 14px;background:rgba(22,122,72,.08);border-radius:8px;font-size:14.5px;color:var(--text);}
 .predict-out[hidden]{display:none;}
-.predict-out .po-val{font-family:'IBM Plex Mono',monospace;font-weight:800;color:var(--green);}
+.predict-out .po-val{font-family:var(--font-code);font-weight:800;color:var(--green);}
 .section-label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
 #tab-var .section-label{color:var(--box-var);}
 #tab-list1d .section-label{color:var(--box-1d);}
@@ -119,7 +124,7 @@ main{max-width:1064px;margin:0 auto;padding:32px 24px 72px;}
 .section-intro p{color:var(--muted);font-size:17px;max-width:680px;}
 
 /* ── 컨트롤 패널 ── */
-.control-panel{background:var(--surface2);border:0;border-radius:10px;padding:20px 24px;margin-bottom:16px;}
+.control-panel{background:#F7F9FB;border:1px solid var(--worksheet-border);border-radius:10px;padding:20px 24px;margin-bottom:16px;}
 .control-panel h3{font-size:16px;font-weight:650;color:var(--text);margin-bottom:12px;}
 .ctrl-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
 .ctrl-row:last-child{margin-bottom:0;}
@@ -158,7 +163,7 @@ input[type=number]{width:80px;}
 .warn strong{color:var(--accent3);}
 
 /* ── 코드 블록: 다크 터미널 ── */
-.code-block{background:var(--ink);border:0;border-radius:10px;overflow:hidden;margin:24px 0;}
+.code-block{background:var(--ink);border:1px solid #34475F;border-radius:10px;overflow:hidden;margin:24px 0;}
 .code-hdr{
   background:var(--ink2);border-bottom:1px solid #22334E;
   padding:9px 14px;display:flex;align-items:center;gap:10px;
@@ -166,9 +171,9 @@ input[type=number]{width:80px;}
 .dots{display:flex;gap:5px;}
 .dots span{width:11px;height:11px;border-radius:50%;}
 .d-r{background:#ff5f57;}.d-y{background:#febc2e;}.d-g{background:#28c840;}
-.code-fname{font-size:12px;color:#8FA3C4;font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;flex:1;}
-pre{padding:18px;overflow-x:auto;font-size:15px;line-height:1.85;color:#D8E2F2;}
-code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
+.code-fname{font-size:12px;color:#8FA3C4;font-family:var(--font-code);flex:1;}
+pre{padding:20px;overflow-x:auto;font-family:var(--font-code);font-size:16px;line-height:1.85;color:#D8E2F2;tab-size:4;}
+code{font-family:var(--font-code);}
 .kw{color:#FF8FA3;font-weight:600;}.fn{color:#7CB8FF;}.str{color:#8AE9A1;}
 .num{color:#FFB86B;}.cmt{color:#6B7E99;font-style:italic;}
 .op{color:#FFD43B;}
@@ -189,7 +194,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 @media(hover:none){.var-del{opacity:1;}}
 .var-box .val{font-size:22px;font-weight:800;color:var(--text);}
 .var-box .type-badge{font-size:12px;font-weight:600;color:#795027;background:#F7E8D9;border-radius:4px;padding:1px 6px;}
-.var-nametag{color:var(--box-var);font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;padding:0 8px;white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis;}
+.var-nametag{color:var(--box-var);font-family:var(--font-code);font-size:15px;font-weight:600;padding:0 8px;white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis;}
 .var-arrow{
   font-size:22px;color:var(--box-var);line-height:1;
 }
@@ -289,7 +294,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 .loop-fork .arm{padding:6px 13px;border-radius:8px;font-size:13px;font-weight:700;border:2px dashed var(--border);color:var(--muted);}
 .loop-fork .arm.on-p{border-color:#167A48;color:#167A48;background:#E4F6EC;border-style:solid;}
 .loop-fork .arm.on-f{border-color:#C13A3A;color:#C13A3A;background:#FBE9E9;border-style:solid;}
-.loop-miniline{font-family:'IBM Plex Mono','Consolas',monospace;font-size:13px;background:var(--ink);color:#D8E2F2;padding:9px 13px;border-radius:8px;margin-top:12px;}
+.loop-miniline{font-family:var(--font-code);font-size:13px;background:var(--ink);color:#D8E2F2;padding:9px 13px;border-radius:8px;margin-top:12px;}
 .loop-miniline .cur{background:var(--box-loop);color:#fff;padding:1px 5px;border-radius:4px;}
 
 /* ══════════════════════
@@ -397,8 +402,8 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
   background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;
   padding:9px 8px;text-align:center;display:flex;flex-direction:column;gap:3px;min-width:48px;
 }
-.dim-cell .dv{font-size:17px;font-weight:800;color:var(--text);font-family:'IBM Plex Mono',monospace;line-height:1.1;}
-.dim-cell .dl{font-size:10.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:-.02em;}
+.dim-cell .dv{font-size:17px;font-weight:800;color:var(--text);font-family:var(--font-code);line-height:1.1;}
+.dim-cell .dl{font-size:10.5px;color:var(--muted);font-family:var(--font-code);letter-spacing:-.02em;}
 .dim-point .dim-cell{padding:16px 24px;}
 .dim-point .dim-cell .dv{font-size:22px;}
 .col-var .dim-cell{border-color:var(--box-var);}
@@ -406,13 +411,13 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 .col-2d .dim-cell{border-color:var(--box-2d);}
 /* 함수·클래스 챕터 도입부 개념 상자 (여전히 사용) */
 .mem-box{border:2px dashed var(--border);border-radius:10px;padding:14px;position:relative;display:flex;flex-direction:column;gap:8px;}
-.mem-address{font-size:12px;color:var(--muted);font-family:monospace;position:absolute;top:6px;right:8px;}
-.mem-item{background:var(--surface2);border-radius:6px;padding:6px 10px;font-size:12px;font-family:monospace;display:flex;justify-content:space-between;}
+.mem-address{font-size:12px;color:var(--muted);font-family:var(--font-code);position:absolute;top:6px;right:8px;}
+.mem-item{background:var(--surface2);border-radius:6px;padding:6px 10px;font-size:12px;font-family:var(--font-code);display:flex;justify-content:space-between;}
 .mem-key{color:var(--blue);}
 .mem-val{color:var(--green);}
 
 /* ── 퀴즈 ── */
-.quiz{background:var(--surface);border:0;border-top:1px solid var(--border);border-radius:0;padding:28px 0;margin:32px 0;}
+.quiz{background:var(--surface);border:1px solid var(--worksheet-border);border-radius:10px;padding:24px;margin:32px 0;}
 .quiz h4{font-size:15px;font-weight:700;color:var(--accent3);margin-bottom:4px;}
 .quiz p{font-size:15px;color:var(--muted);margin-bottom:16px;}
 .quiz-opts{display:flex;flex-direction:column;gap:8px;}
@@ -448,7 +453,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 .quiz-perfect{color:var(--green);font-weight:700;margin:10px 0 4px;}
 /* 인라인 오류 카드(P4) */
 .err-card{margin:14px 0;background:var(--ink);border:1px solid var(--ink2);border-left:4px solid var(--red);border-radius:10px;padding:12px 15px;animation:errIn .18s ease;}
-.err-title{color:#FF8A8A;font-size:13.5px;font-weight:700;font-family:'IBM Plex Mono','Consolas',monospace;line-height:1.5;}
+.err-title{color:#FF8A8A;font-size:13.5px;font-weight:700;font-family:var(--font-code);line-height:1.5;}
 .err-detail{color:#C7D3E8;font-size:13px;margin-top:6px;line-height:1.6;}
 @keyframes errIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 /* 진도 초기화 버튼(P5) */
@@ -487,13 +492,13 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 .fn-param-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
 .fn-param-row:last-child{margin-bottom:0;}
 .fn-param-label{
-  font-size:12px;font-family:monospace;color:var(--blue);
+  font-size:12px;font-family:var(--font-code);color:var(--blue);
   min-width:52px;font-weight:700;
 }
 .fn-param-input{
   width:80px;height:34px;padding:4px 8px;
   background:#FFFFFF;border:1px solid var(--border);
-  border-radius:7px;color:var(--text);font-size:15px;font-family:monospace;
+  border-radius:7px;color:var(--text);font-size:15px;font-family:var(--font-code);
   text-align:center;outline:none;transition:border-color .2s;
 }
 .fn-param-input:focus{border-color:var(--accent);}
@@ -505,9 +510,9 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
   box-shadow:0 3px 16px rgba(46,108,168,.12);
 }
 .fn-body-panel .fn-panel-title{color:rgba(46,108,168,.75);}
-.fn-def-line{font-size:13px;font-family:monospace;color:#C13A3A;font-weight:700;margin-bottom:8px;}
+.fn-def-line{font-size:13px;font-family:var(--font-code);color:#C13A3A;font-weight:700;margin-bottom:8px;}
 .fn-body-line{
-  font-size:13px;font-family:monospace;color:var(--text);
+  font-size:13px;font-family:var(--font-code);color:var(--text);
   padding:6px 10px;background:rgba(0,0,0,.04);
   border-radius:6px;border-left:3px solid rgba(46,108,168,.35);
 }
@@ -524,7 +529,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 .fn-output-panel .fn-panel-title{color:var(--green);}
 .fn-output-val{
   font-size:32px;font-weight:900;color:var(--text);
-  margin:8px 0 6px;font-family:monospace;word-break:break-all;
+  margin:8px 0 6px;font-family:var(--font-code);word-break:break-all;
   transition:opacity .15s;
 }
 .fn-output-type{
@@ -551,7 +556,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
   font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   color:var(--muted);flex-shrink:0;
 }
-.fn-call-expr,.fn-return-expr{font-family:monospace;font-size:16px;font-weight:800;color:var(--text);}
+.fn-call-expr,.fn-return-expr{font-family:var(--font-code);font-size:16px;font-weight:800;color:var(--text);}
 .fn-call-fname{color:var(--accent);}
 .fn-arg{font-weight:800;padding:1px 6px;border-radius:5px;transition:background .3s;}
 .fn-arg.lit{box-shadow:0 0 0 2px currentColor;}
@@ -575,7 +580,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
   background:rgba(22,122,72,.06);border:1px solid rgba(22,122,72,.25);border-radius:12px;
   padding:11px 16px;margin-top:14px;
 }
-.fn-return-val{font-family:monospace;font-weight:800;color:var(--green);
+.fn-return-val{font-family:var(--font-code);font-weight:800;color:var(--green);
   padding:1px 9px;border-radius:5px;background:rgba(22,122,72,.1);}
 
 .fn-flow-caption{
@@ -615,7 +620,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
   border:1px solid rgba(192,69,94,.25);border-radius:10px;padding:3px 10px;
 }
 .cls-mold-name{
-  font-size:17px;font-weight:800;color:#9E3247;font-family:monospace;
+  font-size:17px;font-weight:800;color:#9E3247;font-family:var(--font-code);
 }
 .cls-mold-section{padding:16px 20px;border-bottom:1px dashed rgba(192,69,94,.15);}
 .cls-mold-section:last-child{border-bottom:none;}
@@ -630,7 +635,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 .cls-var-item{
   display:inline-flex;align-items:center;gap:6px;
   background:rgba(183,121,31,.08);border:1px solid rgba(183,121,31,.25);
-  border-radius:8px;padding:6px 12px;margin:4px;font-family:monospace;font-size:13px;
+  border-radius:8px;padding:6px 12px;margin:4px;font-family:var(--font-code);font-size:13px;
 }
 .cls-var-name{color:var(--accent3);font-weight:700;}
 .cls-var-eq{color:var(--muted);}
@@ -643,7 +648,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 .cls-inst-slot{
   display:inline-flex;align-items:center;gap:6px;
   background:rgba(37,99,196,.06);border:1px dashed rgba(37,99,196,.25);
-  border-radius:8px;padding:6px 12px;margin:4px;font-family:monospace;font-size:13px;
+  border-radius:8px;padding:6px 12px;margin:4px;font-family:var(--font-code);font-size:13px;
 }
 .cls-inst-slot-name{color:var(--blue);font-weight:700;}
 .cls-inst-slot-q{color:var(--muted);}
@@ -652,7 +657,7 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
   display:inline-block;
   background:rgba(22,122,72,.08);border:1px solid rgba(22,122,72,.25);
   border-radius:8px;padding:5px 12px;margin:4px;
-  font-family:monospace;font-size:13px;color:var(--green);font-weight:700;
+  font-family:var(--font-code);font-size:13px;color:var(--green);font-weight:700;
 }
 .cls-method-tag.is-init{
   background:rgba(46,108,168,.10);border-color:rgba(46,108,168,.30);color:var(--box-fn);
@@ -682,11 +687,11 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 .inst-fish{font-size:30px;text-align:center;margin-bottom:10px;line-height:1;}
 .inst-num{
   position:absolute;top:8px;right:10px;
-  font-size:12px;color:var(--muted);font-family:monospace;
+  font-size:12px;color:var(--muted);font-family:var(--font-code);
 }
 .inst-attr-row{
   display:flex;justify-content:space-between;gap:8px;
-  font-size:13px;font-family:monospace;margin:5px 0;
+  font-size:13px;font-family:var(--font-code);margin:5px 0;
   padding:3px 0;border-bottom:1px dashed rgba(22,122,72,.2);
 }
 .inst-attr-row:last-of-type{border-bottom:none;}
@@ -695,19 +700,19 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 .inst-class-badge{
   margin-top:10px;font-size:12px;
   background:rgba(192,69,94,.07);border:1px solid rgba(192,69,94,.22);
-  border-radius:6px;padding:4px 8px;font-family:monospace;color:var(--pink);
+  border-radius:6px;padding:4px 8px;font-family:var(--font-code);color:var(--pink);
   text-align:center;
 }
 .inst-methods{margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;}
 .inst-method-btn{
   background:rgba(22,122,72,.08);border:1px solid rgba(22,122,72,.25);
   border-radius:6px;color:var(--green);font-size:12px;font-weight:700;
-  padding:3px 8px;cursor:pointer;font-family:monospace;transition:background .15s;
+  padding:3px 8px;cursor:pointer;font-family:var(--font-code);transition:background .15s;
 }
 .inst-method-btn:hover{background:rgba(22,122,72,.18);}
 .inst-method-result{
   margin-top:8px;background:rgba(22,122,72,.05);border-radius:6px;
-  padding:6px 8px;font-size:12px;font-family:monospace;color:var(--green);
+  padding:6px 8px;font-size:12px;font-family:var(--font-code);color:var(--green);
   min-height:22px;word-break:break-word;
 }
 
@@ -751,6 +756,8 @@ code{font-family:'IBM Plex Mono','D2Coding',Consolas,monospace;}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important;}
 }
+/* Worksheet outlines group tasks without competing with chapter colors. */
+.var-stage,.list1d-stage,.list2d-stage,.loop-stage,.fn-stage,.cls-instances-wrap{border-color:var(--worksheet-border);}
 /* Shared reading and control details */
 button,input,select{font-family:inherit;}
 button:disabled{cursor:default;}
@@ -760,15 +767,18 @@ input,select{max-width:100%;caret-color:var(--accent);}
 .chapter-goals summary{cursor:pointer;width:fit-content;padding:4px 0;font-weight:550;}
 .chapter-goals summary::marker{color:var(--muted);}
 .dots{display:none;}
-.cmt{color:#9EACC0;}
+.cmt{color:#AAB8CA;font-style:normal;}
+.py-self{color:#FFADBB;}
 .btn{font-size:14px;min-height:40px;font-family:inherit;}
 .btn-sm,.fn-chip,.cls-chip{min-height:36px;}
-pre,code{letter-spacing:0;word-break:normal;}
+pre,code,.predict-code{font-family:var(--font-code);letter-spacing:0;word-break:normal;font-variant-ligatures:none;font-feature-settings:"liga" 0;tab-size:4;}
 :where(button,input,select,summary):focus-visible{outline:3px solid #2E6CA8;outline-offset:3px;}
 @media(max-width:600px){
  header{padding:20px;}header p{font-size:15px;}
  main{padding:24px 20px 48px;}
  .control-panel{padding:18px 16px;}
+ .predict,.quiz{padding:20px 16px;}
+ pre{padding:16px;font-size:15px;}.predict-code{font-size:15px;}
  .ctrl-row{gap:10px;}
  .cp-track{max-width:72px;}.chapter-progress{padding:8px 20px;}
  .var-stage{padding:24px 16px;gap:20px;}
@@ -1401,7 +1411,7 @@ print(Dog().legs)</div>
     </div>
     <div class="memory-col col-2d">
       <h4>📊 2차원 — 행×열 격자</h4>
-      <div class="mem-cap">행 × 열 구조 · <b>면(面)</b>처럼 표. <code style="font-family:'IBM Plex Mono',monospace">[[1,2,3],[4,5,6]]</code></div>
+      <div class="mem-cap">행 × 열 구조 · <b>면(面)</b>처럼 표. <code style="font-family:var(--font-code)">[[1,2,3],[4,5,6]]</code></div>
       <div class="dim-grid">
         <div class="dim-cell"><span class="dv">1</span><span class="dl">[0][0]</span></div>
         <div class="dim-cell"><span class="dv">2</span><span class="dl">[0][1]</span></div>
@@ -1433,9 +1443,9 @@ print(Dog().legs)</div>
       </tr>
       <tr style="border-bottom:1px solid var(--border);background:rgba(0,0,0,.025)">
         <td style="padding:11px 14px;color:var(--muted)">접근 방법</td>
-        <td style="padding:11px 14px;text-align:center;font-family:monospace">x</td>
-        <td style="padding:11px 14px;text-align:center;font-family:monospace">x[i]</td>
-        <td style="padding:11px 14px;text-align:center;font-family:monospace">x[i][j]</td>
+        <td style="padding:11px 14px;text-align:center;font-family:var(--font-code)">x</td>
+        <td style="padding:11px 14px;text-align:center;font-family:var(--font-code)">x[i]</td>
+        <td style="padding:11px 14px;text-align:center;font-family:var(--font-code)">x[i][j]</td>
       </tr>
       <tr style="border-bottom:1px solid var(--border)">
         <td style="padding:11px 14px;color:var(--muted)">인덱스 개수</td>
@@ -2126,7 +2136,7 @@ function renderList1D(){
 
   const nameRow=document.createElement('div');
   nameRow.className='list1d-name';
-  nameRow.innerHTML=`<span class="list1d-varname">${esc(name)}</span><span style="font-size:13px;color:var(--muted);font-family:monospace;">= [&nbsp;</span>`;
+  nameRow.innerHTML=`<span class="list1d-varname">${esc(name)}</span><span style="font-size:13px;color:var(--muted);font-family:var(--font-code);">= [&nbsp;</span>`;
   stage.appendChild(nameRow);
 
   const container=document.createElement('div');
@@ -2152,7 +2162,7 @@ function renderList1D(){
   stage.appendChild(container);
 
   const closing=document.createElement('div');
-  closing.innerHTML=`<span style="font-size:13px;color:var(--muted);font-family:monospace;padding-left:8px;">&nbsp;]</span>`;
+  closing.innerHTML=`<span style="font-size:13px;color:var(--muted);font-family:var(--font-code);padding-left:8px;">&nbsp;]</span>`;
   stage.appendChild(closing);
 
   // 음수 인덱스 표시
@@ -2184,7 +2194,7 @@ function highlightCell1D(){
     info.innerHTML=`<div class="idx-arrow-line">
       <span class="arrow-badge">${esc(name)}[${idx}]</span>
       <span style="color:var(--muted)"> = </span>
-      <span style="color:var(--green);font-family:monospace;font-weight:700">${esc(list1dData[actualIdx])}</span>
+      <span style="color:var(--green);font-family:var(--font-code);font-weight:700">${esc(list1dData[actualIdx])}</span>
     </div>`;
     document.getElementById('list1d-info').style.display='block';
   } else {
@@ -2528,7 +2538,7 @@ function highlightPy(code){
     else if(m[2]) out += '<span class="str">'+esc(m[2])+'</span>';
     else if(m[3]) out += '<span class="num">'+m[3]+'</span>';
     else { const id=m[4];
-      if(id==='self') out += '<span style="color:#C13A3A">self</span>';
+      if(id==='self') out += '<span class="py-self">self</span>';
       else if(KW.has(id)) out += '<span class="kw">'+id+'</span>';
       else if(BUILTIN.has(id)) out += '<span class="fn">'+id+'</span>';
       else out += esc(id);
